@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <!-- Birdies & Bets mark: a golf flag whose hole is an olive gear. Cream ground, burnt-orange flag. -->
+  <rect width="1024" height="1024" fill="#F5EAD8"/>
+
+  <!-- green edge -->
+  <path d="M 120 760 Q 512 700 904 760" fill="none" stroke="#D3C9BA" stroke-width="18" stroke-linecap="round"/>
+
+  <!-- gear cup -->
+  <g transform="translate(512 760)">
+    <g fill="#7A8A5E">
+      <rect x="-40" y="-176" width="80" height="352" rx="24"/>
+      <rect x="-40" y="-176" width="80" height="352" rx="24" transform="rotate(45)"/>
+      <rect x="-40" y="-176" width="80" height="352" rx="24" transform="rotate(90)"/>
+      <rect x="-40" y="-176" width="80" height="352" rx="24" transform="rotate(135)"/>
+    </g>
+    <circle r="132" fill="#7A8A5E"/>
+    <circle r="132" fill="none" stroke="#F5EAD8" stroke-width="14"/>
+    <circle r="58" fill="#3D472B"/>
+    <circle r="58" fill="none" stroke="#F5EAD8" stroke-width="12"/>
+  </g>
+
+  <!-- pole -->
+  <rect x="494" y="140" width="36" height="640" rx="18" fill="#201E1D"/>
+
+  <!-- flag -->
+  <path d="M 530 160 L 850 268 L 530 376 Z" fill="#C67139"/>
+</svg>
