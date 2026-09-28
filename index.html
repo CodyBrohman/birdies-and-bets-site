@@ -1,97 +1,177 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Birdies &amp; Bets: Golf Scorecard</title>
 <meta name="description" content="The golf scorecard that also runs your group's games. Skins, Nassau, match play, Stableford, Wolf and more, scored live from hole 1. iPhone, offline, no account.">
-<meta name="theme-color" content="#F5EAD8" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#1B1916" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#0A0A0A">
 <meta property="og:title" content="Birdies &amp; Bets: Golf Scorecard">
-<meta property="og:description" content="The golf scorecard that also runs your group's games.">
-<meta property="og:image" content="assets/img/og.png">
+<meta property="og:description" content="Keep score. Run the games. The golf scorecard that also runs your group's side games.">
+<meta property="og:image" content="assets/media/hero-still.jpg">
 <meta property="og:type" content="website">
 <link rel="icon" href="assets/img/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/site.css">
+<script>document.documentElement.classList.remove('no-js');</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
-<header class="site-header">
+<header class="site-header" id="site-header">
   <div class="wrap">
     <a class="brand" href="./" aria-label="Birdies &amp; Bets home">
-      <img src="assets/img/icon.svg" alt="" width="40" height="40">
+      <svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M9 3v22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M10 4l11 4-11 4z" fill="#E9A23B"/><circle cx="9" cy="24" r="2.6" fill="currentColor"/></svg>
       Birdies &amp; Bets
     </a>
     <nav class="nav" aria-label="Site">
       <a href="#games">Games</a>
       <a href="privacy.html">Privacy</a>
       <a href="support.html">Support</a>
-      <!-- TODO: replace href with the App Store URL once the listing is live. -->
-      <a class="btn btn-primary" href="#download">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
-        Get the app
-      </a>
+      <!-- TODO: point at the App Store listing once it is live. -->
+      <a class="btn btn-primary" href="#download">Get the app</a>
     </nav>
   </div>
 </header>
 
 <main id="main">
 
-  <section class="hero" aria-labelledby="hero-title">
+  <section class="hero" id="hero" aria-labelledby="hero-title">
+    <div class="hero-media" aria-hidden="true">
+      <div class="poster"></div>
+      <canvas id="hero-canvas"></canvas>
+      <!-- Filled by tools/generate_media.py output. Poster + mp4 are optional; the canvas is the fallback. -->
+      <video id="hero-video" class="hero-video" muted playsinline loop preload="metadata" poster="assets/media/hero-still.jpg" hidden>
+        <source src="assets/media/hero-loop.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="hero-scrim" aria-hidden="true"></div>
+
     <div class="wrap">
-      <div class="copy">
-        <span class="overline">iPhone · Offline · No account</span>
-        <h1 id="hero-title">The golf scorecard that also runs your group's games.</h1>
-        <p class="lede">Skins, Nassau, match play, Stableford, Wolf and more, scored live from hole 1. Tap a score, and the standings update before you reach the next tee.</p>
-        <div class="actions">
-          <!-- TODO: replace href with the App Store URL once the listing is live. -->
-          <a class="btn btn-primary btn-lg" href="#download">Get it on the App Store</a>
-          <a class="btn btn-ghost btn-lg" href="#games">See the games</a>
+      <div class="hero-copy">
+        <span class="eyebrow">iPhone · Offline · No account</span>
+        <h1 id="hero-title" data-split>
+          <span class="line">Keep score.</span>
+          <span class="line"><em>Run the games.</em></span>
+        </h1>
+        <p class="lede">The golf scorecard that also runs your group's side games. Skins, Nassau, match play, Stableford, Wolf and more, scored live from the first tee.</p>
+        <div class="hero-actions">
+          <!-- TODO: App Store URL -->
+          <a class="btn btn-primary btn-lg" href="#download">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.4 12.6c0-2.5 2-3.7 2.1-3.8-1.2-1.7-3-1.9-3.6-2-1.5-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.8-1.7 0-3.2 1-4.1 2.5-1.8 3-.5 7.6 1.3 10.1.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8s2 .8 3.3.8c1.4 0 2.2-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9-.1 0-2.9-1.1-2.9-4.1zM14 5.2c.7-.8 1.2-2 1-3.2-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1.1 3 1.1.1 2.3-.6 3-1.3z"/></svg>
+            Get it on the App Store
+          </a>
+          <a class="btn btn-ghost btn-lg" href="#shots">See it in play</a>
         </div>
-        <p class="note">Points between friends. No real money, ever.</p>
+        <p class="hero-note">Points between friends. No real money, ever.</p>
       </div>
-      <div class="art">
-        <div class="phone">
-          <img class="pic-light" src="assets/img/01-home-light.png" width="640" height="1391" alt="Birdies &amp; Bets home screen with a Start Round button, a round in progress at Cedar Hollow Golf Club, and recent rounds." loading="eager">
-          <img class="pic-dark" src="assets/img/01-home-dark.png" width="640" height="1391" alt="" loading="eager">
+      <div class="hero-device">
+        <div class="phone" id="hero-phone">
+          <img src="assets/img/01-home-dark.png" width="640" height="1391" alt="Birdies &amp; Bets home screen: Start Round, a round in progress at Cedar Hollow Golf Club, and recent rounds." fetchpriority="high">
+        </div>
+      </div>
+    </div>
+
+    <button class="media-ctl" id="media-ctl" type="button" hidden aria-pressed="false">
+      <svg class="i-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+      <svg class="i-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M8 5.5v13l11-6.5z"/></svg>
+      <span class="label">Pause</span>
+    </button>
+    <div class="scroll-cue" aria-hidden="true">Scroll</div>
+  </section>
+
+  <div class="marquee" aria-label="Game formats">
+    <div class="marquee-track">
+      <span>Skins</span><span>Nassau</span><span>Match Play</span><span>Stroke Play</span><span>Stableford</span><span>Wolf</span><span>Vegas</span><span>Bingo Bango Bongo</span><span>Hot Seat</span>
+      <span aria-hidden="true">Skins</span><span aria-hidden="true">Nassau</span><span aria-hidden="true">Match Play</span><span aria-hidden="true">Stroke Play</span><span aria-hidden="true">Stableford</span><span aria-hidden="true">Wolf</span><span aria-hidden="true">Vegas</span><span aria-hidden="true">Bingo Bango Bongo</span><span aria-hidden="true">Hot Seat</span>
+    </div>
+  </div>
+
+  <section id="shots" aria-labelledby="shots-title">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <span class="eyebrow">In play</span>
+          <h2 id="shots-title">One hole at a time.</h2>
+        </div>
+        <p class="lede">Tap a score and the hole advances itself. Standings update before you reach the next tee.</p>
+      </div>
+      <div class="shots" id="shots-carousel">
+        <div class="shots-track" tabindex="0" aria-roledescription="carousel" aria-label="App screens">
+          <figure class="shot reveal">
+            <div class="phone sm"><img src="assets/img/05a-scorecard-hole-dark.png" width="640" height="1391" alt="Hole screen with four players, stroke badges and score chips." loading="lazy"></div>
+            <figcaption><strong>Score the hole</strong>Chips, not keyboards. Strokes shown on the holes that get them.</figcaption>
+          </figure>
+          <figure class="shot reveal">
+            <div class="phone sm"><img src="assets/img/06-standings-dark.png" width="640" height="1391" alt="Standings screen with live results for each game." loading="lazy"></div>
+            <figcaption><strong>Live standings</strong>2 up through 7, three skins carrying, who's in the hot seat.</figcaption>
+          </figure>
+          <figure class="shot reveal">
+            <div class="phone sm"><img src="assets/img/07-summary-dark.png" width="640" height="1391" alt="Round summary with game results and who owes whom." loading="lazy"></div>
+            <figcaption><strong>The 19th</strong>Game results and the tally. Share the card to the group chat.</figcaption>
+          </figure>
+        </div>
+        <div class="shots-ctl">
+          <button class="icon-btn" type="button" data-dir="-1" aria-label="Previous screen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button>
+          <span class="pos" aria-live="polite">1 / 3</span>
+          <button class="icon-btn" type="button" data-dir="1" aria-label="Next screen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
         </div>
       </div>
     </div>
   </section>
 
-  <section aria-labelledby="features-title">
+  <section id="features" aria-labelledby="features-title">
     <div class="wrap">
-      <div class="section-head">
-        <span class="overline">Built for the course</span>
-        <h2 id="features-title">A proper scorecard first. Everything else on top.</h2>
-        <p>Tap a score chip one hole at a time and the hole advances itself. Front nine, back nine, birdies and bogeys marked, handicap strokes shown on every hole.</p>
+      <div class="section-head reveal">
+        <div>
+          <span class="eyebrow">Built for the course</span>
+          <h2 id="features-title">A proper card first.</h2>
+        </div>
+        <p class="lede">Front nine, back nine, birdies and bogeys marked, handicap strokes on every hole. Everything else sits on top.</p>
       </div>
-      <div class="cards">
-        <article class="card">
-          <div class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 2.5 15l3 3L8 15.5"/><path d="M12 21a9 9 0 1 0-9-9"/><path d="M12 7v5l3 2"/></svg>
-          </div>
-          <h3>Works without a signal</h3>
-          <p>Search thousands of courses and download the scorecard, or add one by hand in a minute. Once the course is loaded the whole round works in airplane mode, every score is saved instantly, and the screen stays awake.</p>
-        </article>
-        <article class="card">
-          <div class="icon positive" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 16V9"/><path d="M11 16V5"/><path d="M16 16v-6"/><path d="M21 16V8"/></svg>
+
+      <div class="bento">
+        <article class="tile tile-big reveal">
+          <div class="card-mock" id="card-mock" aria-label="Example scorecard, net view">
+            <table>
+              <thead><tr><th scope="col">Hole</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>Out</th></tr></thead>
+              <tbody>
+                <tr><td>Par</td><td>4</td><td>5</td><td>3</td><td>4</td><td>4</td><td>3</td><td>5</td><td>4</td><td>4</td><td class="tot">36</td></tr>
+                <tr data-row="0"><td>Sam <span class="dot-note">+8</span></td><td data-s="4 dot"></td><td data-s="5"></td><td data-s="2 birdie"></td><td data-s="4 dot"></td><td data-s="5 bogey"></td><td data-s="3"></td><td data-s="5 dot"></td><td data-s="4"></td><td data-s="4 dot"></td><td class="tot" data-t="36"></td></tr>
+                <tr data-row="1"><td>Priya <span class="dot-note">+2</span></td><td data-s="4"></td><td data-s="4 birdie"></td><td data-s="3"></td><td data-s="5 bogey"></td><td data-s="4"></td><td data-s="3"></td><td data-s="4 birdie dot"></td><td data-s="4"></td><td data-s="4"></td><td class="tot" data-t="35"></td></tr>
+                <tr data-row="2"><td>Marco <span class="dot-note">+14</span></td><td data-s="5 bogey dot"></td><td data-s="6 bogey dot"></td><td data-s="3 dot"></td><td data-s="4 dot"></td><td data-s="6 dot"></td><td data-s="4 bogey"></td><td data-s="5 dot"></td><td data-s="5 bogey dot"></td><td data-s="4 dot"></td><td class="tot" data-t="42"></td></tr>
+              </tbody>
+            </table>
           </div>
           <h3>Handicaps done properly</h3>
-          <p>Enter each player's index and the app computes the course handicap for the tee you're playing, shows exactly which holes get a stroke, and lets each game score gross or net. Plus handicaps, allowances, back nine and shotgun starts are all handled.</p>
+          <p>Enter each index and the app works out the course handicap for the tee you're on, marks the holes that get a stroke, and lets every game score gross or net. Plus handicaps, allowances, back nine and shotgun starts included.</p>
         </article>
-        <article class="card">
-          <div class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M12 3v12"/><path d="m8 7 4-4 4 4"/></svg>
-          </div>
-          <h3>Keep the round, share the card</h3>
-          <p>Every finished round is kept: the full card, the game results and who owes whom. Share the scorecard as an image to the group chat, and back everything up to a file for a new phone.</p>
+
+        <article class="tile tile-tall reveal">
+          <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8.5a15 15 0 0 1 20 0"/><path d="M5 12a10.5 10.5 0 0 1 14 0"/><path d="M8.5 15.5a6 6 0 0 1 7 0"/><path d="m3 3 18 18"/></svg></div>
+          <h3>Works without a signal</h3>
+          <p>Once the course is loaded, the whole round runs in airplane mode.</p>
+        </article>
+
+        <article class="tile tile-third reveal">
+          <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M12 3v12"/><path d="m8 7 4-4 4 4"/></svg></div>
+          <h3>Share the card</h3>
+          <p>The finished scorecard as an image, straight to the group chat.</p>
+        </article>
+
+        <article class="tile tile-third reveal">
+          <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 7v5l3 2"/><path d="M17 3h4v4"/><path d="m21 3-5 5"/></svg></div>
+          <h3>Saved on every tap</h3>
+          <p>Close the app mid-round, reopen it, and Home offers to resume where you left off.</p>
+        </article>
+
+        <article class="tile tile-third tile-photo reveal" id="tile-texture">
+          <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11a9 9 0 0 1 18 0v6a2 2 0 0 1-2 2h-2v-6h4"/><path d="M3 13h4v6H5a2 2 0 0 1-2-2z"/></svg></div>
+          <h3>Thousands of courses</h3>
+          <p>Search and download the scorecard, or add a course by hand in a minute. Backups to a file for a new phone.</p>
         </article>
       </div>
     </div>
@@ -99,82 +179,61 @@
 
   <section id="games" aria-labelledby="games-title">
     <div class="wrap">
-      <div class="section-head">
-        <span class="overline">Game formats</span>
-        <h2 id="games-title">The games you already play, scored for you.</h2>
-        <p>Pick as many as the group wants before you tee off, or add one mid-round. Each recalculates from the full card, so a fixed score three holes back fixes the standings too.</p>
+      <div class="section-head reveal">
+        <div>
+          <span class="eyebrow">Game formats</span>
+          <h2 id="games-title">The games you already play.</h2>
+        </div>
+        <p class="lede">Pick as many as the group wants before you tee off, or add one mid-round. Each recalculates from the full card.</p>
       </div>
-      <div class="games">
-        <div class="game"><strong>Skins</strong><span>Carryover, with optional validation.</span></div>
-        <div class="game"><strong>Nassau</strong><span>Front, back and overall, with automatic presses.</span></div>
-        <div class="game"><strong>Match Play</strong><span>Played off the low handicap.</span></div>
-        <div class="game"><strong>Stroke Play</strong><span>Gross or net.</span></div>
-        <div class="game"><strong>Stableford</strong><span>Configurable points per score.</span></div>
-        <div class="game"><strong>Wolf</strong><span>Rotating wolf and lone-wolf doubles.</span></div>
-        <div class="game"><strong>Vegas</strong><span>Team play, scores combined.</span></div>
-        <div class="game"><strong>Bingo Bango Bongo</strong><span>First on, closest, first in.</span></div>
-        <div class="game"><strong>Hot Seat</strong><span>With punishments your group writes.</span></div>
-      </div>
+      <ol class="games-list">
+        <li class="reveal"><span class="n">01</span><span class="name">Skins</span><span class="desc">Carryover, with optional validation.</span></li>
+        <li class="reveal"><span class="n">02</span><span class="name">Nassau</span><span class="desc">Front, back and overall, with automatic presses.</span></li>
+        <li class="reveal"><span class="n">03</span><span class="name">Match Play</span><span class="desc">Played off the low handicap.</span></li>
+        <li class="reveal"><span class="n">04</span><span class="name">Stroke Play</span><span class="desc">Gross or net.</span></li>
+        <li class="reveal"><span class="n">05</span><span class="name">Stableford</span><span class="desc">Configurable points per score.</span></li>
+        <li class="reveal"><span class="n">06</span><span class="name">Wolf</span><span class="desc">Rotating wolf and lone-wolf doubles.</span></li>
+        <li class="reveal"><span class="n">07</span><span class="name">Vegas</span><span class="desc">Team play, scores combined.</span></li>
+        <li class="reveal"><span class="n">08</span><span class="name">Bingo Bango Bongo</span><span class="desc">First on, closest, first in.</span></li>
+        <li class="reveal"><span class="n">09</span><span class="name">Hot Seat</span><span class="desc">With punishments your group writes.</span></li>
+      </ol>
     </div>
   </section>
 
-  <section aria-labelledby="shots-title">
-    <div class="wrap">
-      <div class="section-head">
-        <span class="overline">On the course</span>
-        <h2 id="shots-title">Cream in the sun. Dark for the evening nine.</h2>
-        <p>The whole app follows your phone's appearance, or flip it yourself from Home.</p>
-      </div>
-      <div class="shots">
-        <figure class="shot">
-          <div class="phone sm">
-            <img class="pic-light" src="assets/img/05a-scorecard-hole-light.png" width="640" height="1391" alt="Hole screen showing four players with stroke badges and score chips." loading="lazy">
-            <img class="pic-dark" src="assets/img/05a-scorecard-hole-dark.png" width="640" height="1391" alt="" loading="lazy">
-          </div>
-          <figcaption>One hole at a time. Tap a chip, the hole advances.</figcaption>
-        </figure>
-        <figure class="shot">
-          <div class="phone sm">
-            <img class="pic-light" src="assets/img/06-standings-light.png" width="640" height="1391" alt="Standings screen showing live results for each game." loading="lazy">
-            <img class="pic-dark" src="assets/img/06-standings-dark.png" width="640" height="1391" alt="" loading="lazy">
-          </div>
-          <figcaption>Standings after every hole. 2 up through 7, three skins carrying.</figcaption>
-        </figure>
-        <figure class="shot">
-          <div class="phone sm">
-            <img class="pic-light" src="assets/img/07-summary-light.png" width="640" height="1391" alt="Round summary with game results and who owes whom." loading="lazy">
-            <img class="pic-dark" src="assets/img/07-summary-dark.png" width="640" height="1391" alt="" loading="lazy">
-          </div>
-          <figcaption>The summary at the 19th. Game results and the tally.</figcaption>
-        </figure>
-      </div>
-    </div>
-  </section>
-
-  <section aria-labelledby="plain-title">
+  <section id="straight" aria-labelledby="plain-title">
     <div class="wrap">
       <div class="plain">
-        <div>
-          <span class="overline">What it doesn't do</span>
+        <div class="reveal">
+          <span class="eyebrow">Straight talk</span>
           <h2 id="plain-title">A tally, and nothing more.</h2>
-          <p>Birdies &amp; Bets keeps a tally of points between players. It has no real-money gambling, no deposits, no withdrawals, no payments, and no links to payment services. Settling up is between friends, in the parking lot, as it always was.</p>
+          <p class="lede">Birdies &amp; Bets keeps a tally of points between players. No real-money gambling, no deposits, no withdrawals, no payments, no links to payment services. Settling up is between friends, in the parking lot, as it always was.</p>
+          <ul class="checks">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg>No account and no sign-in</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg>Nothing leaves your phone unless you share or back it up</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg>No analytics, no advertising, no tracking</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg>Stakes are points. The app never touches money</li>
+          </ul>
         </div>
-        <ul class="checks">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg>No account and no sign-in</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg>Nothing you enter leaves your phone unless you share or back it up</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg>No analytics, no advertising, no tracking</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg>Stakes are points. The app never touches money</li>
-        </ul>
+        <div class="plain-media reveal" id="plain-media">
+          <div class="fallback" aria-hidden="true"></div>
+          <!-- Filled by tools/generate_media.py: assets/media/group-19th.jpg -->
+          <img id="plain-photo" src="assets/media/group-19th.jpg" alt="Four friends around a clubhouse table at dusk, phones down, settling the round." loading="lazy" hidden>
+          <span class="tag">The 19th hole</span>
+        </div>
       </div>
     </div>
   </section>
 
   <section class="cta" id="download" aria-labelledby="cta-title">
-    <div class="wrap narrow">
-      <h2 id="cta-title">Ready for the first tee.</h2>
-      <p>Birdies &amp; Bets is coming to the App Store for iPhone. Until then, questions and early-access requests go to the address below.</p>
-      <!-- TODO: swap for an App Store badge linking to the listing once it is live. -->
-      <a class="btn btn-primary btn-lg" href="mailto:codybrohman@gmail.com?subject=Birdies%20%26%20Bets">Email for early access</a>
+    <div class="wrap">
+      <span class="eyebrow reveal">Coming to iPhone</span>
+      <h2 id="cta-title" class="reveal">Ready for the first tee.</h2>
+      <p class="lede reveal">Birdies &amp; Bets is heading to the App Store. Until the listing is live, early-access requests and questions go to the address below.</p>
+      <div class="cta-actions reveal">
+        <!-- TODO: swap for an App Store badge linking to the listing once it is live. -->
+        <a class="btn btn-primary btn-lg" href="mailto:codybrohman@gmail.com?subject=Birdies%20%26%20Bets%20early%20access">Ask for early access</a>
+        <a class="btn btn-ghost btn-lg" href="support.html">Read the FAQ</a>
+      </div>
     </div>
   </section>
 
@@ -190,5 +249,10 @@
     </nav>
   </div>
 </footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script src="assets/js/hero-canvas.js" defer></script>
+<script src="assets/js/site.js" defer></script>
 </body>
 </html>
