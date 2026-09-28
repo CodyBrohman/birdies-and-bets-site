@@ -41,7 +41,7 @@
     for (var l = 0; l < levels; l++) {
       var iso = -3.2 + (6.4 * l) / (levels - 1);
       var a = 0.05 + 0.06 * Math.abs(Math.sin(l * 0.9 + t * 0.0004));
-      ctx.strokeStyle = 'rgba(233,162,59,' + a.toFixed(3) + ')';
+      ctx.strokeStyle = 'rgba(95,196,106,' + a.toFixed(3) + ')';
       ctx.beginPath();
       for (var y = 0; y < rows - 1; y++) {
         for (var x = 0; x < cols - 1; x++) {
