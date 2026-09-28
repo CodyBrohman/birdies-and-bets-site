@@ -166,12 +166,19 @@ def output_url(st, kind):
 
 
 def upload_source(local_path):
-    """Kling needs a public image_url. We use the just-generated Higgsfield URL,
-    stored next to the file in a .url sidecar, so no upload is required."""
+    """Kling needs a public image_url: HERO_STILL_URL env, or the .url sidecar written when the
+    still itself came from Higgsfield."""
+    env = os.environ.get("HERO_STILL_URL")
+    if env:
+        return env
     side = local_path + ".url"
     if os.path.exists(side):
         return open(side, encoding="utf-8").read().strip()
-    sys.exit(f"Missing {side}; regenerate the still with --force so its hosted URL is recorded.")
+    sys.exit(
+        "The video job needs a public URL for the hero still. Either set HERO_STILL_URL to where the "
+        "Flux-generated assets/media/hero-still.jpg is hosted (e.g. the GitHub Pages URL once pushed), "
+        "or regenerate the still through Higgsfield so its hosted URL is recorded."
+    )
 
 
 def main():

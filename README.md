@@ -12,7 +12,8 @@ assets/js/site.js         header, hero motion, reveals, carousel, video control,
 assets/js/hero-canvas.js  animated contour field used behind the hero when there is no video
 assets/img/               icon, favicon, app screens (resized from the mockups)
 assets/media/             generated hero video and photographs (see below)
-tools/generate_media.py   Higgsfield API script that produces assets/media/
+tools/generate_media_flux.py  local FLUX.1-schnell script that produces assets/media/
+tools/generate_media.py       optional Higgsfield API script for the hero video
 ```
 
 ## Preview
@@ -23,32 +24,35 @@ python -m http.server 8080
 
 Open http://localhost:8080. The site is dark by design; there is no light theme.
 
-## Generated media (Higgsfield)
+## Generated media
 
-The hero video, its poster, a green texture and the 19th-hole photograph are generated with the
-Higgsfield API. The site works without them: the hero falls back to the contour animation and the
-photo tiles use gradients. When the files exist in `assets/media/`, the page picks them up.
+The hero photograph, its Open Graph variant, a green texture and the 19th-hole photograph are
+generated locally with FLUX.1-schnell (open weights, Apache-2.0, no account or key). The site works
+without them: the hero falls back to the contour animation and the photo tiles use gradients. When
+the files exist in `assets/media/`, the page picks them up. The hero photo gets a slow drift in CSS.
 
-1. Create an API key at https://console.higgsfield.ai (an ID and a secret, shown once).
-2. Set the key in the shell you run the script from. Never commit it.
-   ```
-   $env:HF_API_KEY_ID='...'; $env:HF_API_KEY_SECRET='...'     # PowerShell
-   export HF_KEY='id:secret'                                   # bash
-   ```
-3. From this folder:
-   ```
-   python tools/generate_media.py --dry-run    # shows what would be generated, spends nothing
-   python tools/generate_media.py              # generates whatever is missing
-   python tools/generate_media.py --force      # regenerates everything
-   python tools/generate_media.py --only hero-still hero-loop
-   ```
+Requirements: an NVIDIA GPU with 8 GB or more, ~17 GB of disk for weights, Python 3.13.
 
-Outputs: `hero-still.jpg` (16:9 poster and Open Graph image), `hero-loop.mp4` (10 s, Kling 2.5
-Turbo standard, image-to-video from the still), `texture-green.jpg`, `group-19th.jpg`. Cost with the
-defaults is roughly a dollar, nearly all of it the video. Prompts live at the top of the script.
+```
+cd tools
+py -3.13 -m venv .venv
+.venv\Scripts\python -m pip install torch --index-url https://download.pytorch.org/whl/cu124
+.venv\Scripts\python -m pip install "diffusers>=0.33" transformers accelerate gguf sentencepiece protobuf pillow huggingface_hub
+cd ..
+tools\.venv\Scripts\python tools\generate_media_flux.py            # generates what is missing
+tools\.venv\Scripts\python tools\generate_media_flux.py --force    # regenerate all
+tools\.venv\Scripts\python tools\generate_media_flux.py --only hero-still --seed 42
+```
 
-If `hero-loop.mp4` comes back over ~8 MB, regenerate it with `duration: 5` in the script; there is
-no local transcoder in this setup.
+Weights download into `tools/models/` on first run. Prompts and sizes are at the top of the script.
+
+### Optional: hero video via Higgsfield
+
+`tools/generate_media.py` can produce a 10 s image-to-video loop (`hero-loop.mp4`) through the
+Higgsfield API from the still. It needs a funded account and a key pair from console.higgsfield.ai
+set as `HF_API_KEY_ID` and `HF_API_KEY_SECRET` (or `HF_KEY='id:secret'`), never committed.
+Run `python tools/generate_media.py --only hero-loop` with `HERO_STILL_URL` set to a public URL of `hero-still.jpg` (the GitHub Pages URL once the site is pushed). When the mp4 exists the page plays it
+instead of drifting the still. Keep it under ~8 MB (use `duration: 5` in the script if needed).
 
 ## Deploy (GitHub Pages)
 
