@@ -11,57 +11,6 @@
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  /* ---------- hero video (optional asset) ---------- */
-  var video = document.getElementById('hero-video');
-  var ctl = document.getElementById('media-ctl');
-  var canvas = document.getElementById('hero-canvas');
-  var plainPhoto = document.getElementById('plain-photo');
-  var tileTexture = document.getElementById('tile-texture');
-
-  function probe(url, ok) {
-    var img = new Image();
-    img.onload = function () { ok(true); };
-    img.onerror = function () { ok(false); };
-    img.src = url;
-  }
-
-  // Show generated photos only when they exist (site works without them).
-  if (plainPhoto) probe(plainPhoto.getAttribute('src'), function (yes) { if (yes) plainPhoto.hidden = false; });
-  if (tileTexture) probe('assets/media/texture-green.jpg', function (yes) { if (yes) tileTexture.style.backgroundImage = 'url(assets/media/texture-green.jpg)'; });
-
-  if (video) {
-    var src = video.querySelector('source');
-    var poster = video.getAttribute('poster');
-    probe(poster, function (hasPoster) {
-      if (!hasPoster) return; // no media generated yet: keep canvas
-      video.hidden = false;
-      if (canvas) canvas.style.display = 'none';
-      if (reduce.matches) { video.removeAttribute('autoplay'); return; } // poster only
-      fetch(src.getAttribute('src'), { method: 'HEAD' }).then(function (r) {
-        if (!r.ok) return;
-        video.load();
-        var p = video.play();
-        if (p && p.catch) p.catch(function () {});
-        ctl.hidden = false;
-        var playing = true;
-        function setState(on) {
-          playing = on;
-          ctl.setAttribute('aria-pressed', String(!on));
-          ctl.querySelector('.i-pause').hidden = !on;
-          ctl.querySelector('.i-play').hidden = on;
-          ctl.querySelector('.label').textContent = on ? 'Pause' : 'Play';
-        }
-        ctl.addEventListener('click', function () { playing ? video.pause() : video.play(); setState(!playing); });
-        if ('IntersectionObserver' in window) {
-          new IntersectionObserver(function (es) {
-            if (!playing) return;
-            es[0].isIntersecting ? video.play().catch(function () {}) : video.pause();
-          }, { threshold: 0.1 }).observe(video);
-        }
-      }).catch(function () {});
-    });
-  }
-
   /* ---------- headline word reveal ---------- */
   var h1 = document.querySelector('[data-split]');
   if (h1) {

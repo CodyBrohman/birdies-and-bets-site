@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#0A0A0A">
 <meta property="og:title" content="Birdies &amp; Bets: Golf Scorecard">
 <meta property="og:description" content="Keep score. Run the games. The golf scorecard that also runs your group's side games.">
-<meta property="og:image" content="assets/media/og.jpg">
+<meta property="og:image" content="assets/img/og.png">
 <meta property="og:type" content="website">
 <link rel="icon" href="assets/img/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
@@ -43,10 +43,6 @@
     <div class="hero-media" aria-hidden="true">
       <div class="poster"></div>
       <canvas id="hero-canvas"></canvas>
-      <!-- Filled by tools/generate_media.py output. Poster + mp4 are optional; the canvas is the fallback. -->
-      <video id="hero-video" class="hero-video" muted playsinline loop preload="metadata" poster="assets/media/hero-still.jpg" hidden>
-        <source src="assets/media/hero-loop.mp4" type="video/mp4">
-      </video>
     </div>
     <div class="hero-scrim" aria-hidden="true"></div>
 
@@ -75,11 +71,6 @@
       </div>
     </div>
 
-    <button class="media-ctl" id="media-ctl" type="button" hidden aria-pressed="false">
-      <svg class="i-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
-      <svg class="i-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M8 5.5v13l11-6.5z"/></svg>
-      <span class="label">Pause</span>
-    </button>
     <div class="scroll-cue" aria-hidden="true">Scroll</div>
   </section>
 
@@ -168,7 +159,7 @@
           <p>Close the app mid-round, reopen it, and Home offers to resume where you left off.</p>
         </article>
 
-        <article class="tile tile-third tile-photo reveal" id="tile-texture">
+        <article class="tile tile-third reveal">
           <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11a9 9 0 0 1 18 0v6a2 2 0 0 1-2 2h-2v-6h4"/><path d="M3 13h4v6H5a2 2 0 0 1-2-2z"/></svg></div>
           <h3>Thousands of courses</h3>
           <p>Search and download the scorecard, or add a course by hand in a minute. Backups to a file for a new phone.</p>
@@ -216,8 +207,6 @@
         </div>
         <div class="plain-media reveal" id="plain-media">
           <div class="fallback" aria-hidden="true"></div>
-          <!-- Filled by tools/generate_media.py: assets/media/group-19th.jpg -->
-          <img id="plain-photo" src="assets/media/group-19th.jpg" alt="Four friends around a clubhouse table at dusk, phones down, settling the round." loading="lazy" hidden>
           <span class="tag">The 19th hole</span>
         </div>
       </div>

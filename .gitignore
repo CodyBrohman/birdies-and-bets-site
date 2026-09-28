@@ -1,5 +1,2 @@
 .DS_Store
 Thumbs.db
-tools/.venv/
-tools/models/
-*.url
