@@ -39,7 +39,7 @@ git push -u origin main
 
 and enable Pages in the repo settings (Deploy from a branch, `main`, `/ (root)`).
 
-The site is served at https://codybrohman.github.io/birdies-and-bets-site/ and every push to `main` redeploys it.
+The site is served at https://www.birdiesandbets.com/ and every push to `main` redeploys it.
 
 ## Before launch
 
