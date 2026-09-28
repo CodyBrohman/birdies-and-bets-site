@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Birdies &amp; Bets: Golf Scorecard</title>
 <meta name="description" content="The golf scorecard that also runs your group's games. Skins, Nassau, match play, Stableford, Wolf and more, scored live from hole 1. iPhone, offline, no account.">
-<meta name="theme-color" content="#0A0A0A">
+<meta name="theme-color" content="#0E0B08">
 <meta property="og:title" content="Birdies &amp; Bets: Golf Scorecard">
 <meta property="og:description" content="Keep score. Run the games. The golf scorecard that also runs your group's side games.">
 <meta property="og:image" content="assets/img/og.png">
@@ -42,6 +42,7 @@
   <section class="hero" id="hero" aria-labelledby="hero-title">
     <div class="hero-media" aria-hidden="true">
       <div class="poster"></div>
+      <picture class="hero-photo"><source media="(max-width: 700px)" srcset="assets/img/hero-bg-sm.webp" type="image/webp"><source srcset="assets/img/hero-bg.webp" type="image/webp"><img src="assets/img/hero-bg.jpg" width="1408" height="768" alt="A golfer on an elevated tee at dawn, fog on the fairway below." fetchpriority="high" decoding="async"></picture>
       <canvas id="hero-canvas"></canvas>
     </div>
     <div class="hero-scrim" aria-hidden="true"></div>
@@ -81,7 +82,8 @@
     </div>
   </div>
 
-  <section id="shots" aria-labelledby="shots-title">
+  <section id="shots" class="has-bg" aria-labelledby="shots-title">
+    <div class="bg" aria-hidden="true"><picture class=""><source media="(max-width: 700px)" srcset="assets/img/shots-bg-sm.webp" type="image/webp"><source srcset="assets/img/shots-bg.webp" type="image/webp"><img src="assets/img/shots-bg.jpg" width="1408" height="768" alt="" loading="lazy" decoding="async"></picture></div>
     <div class="wrap">
       <div class="section-head reveal">
         <div>
@@ -168,7 +170,8 @@
     </div>
   </section>
 
-  <section id="games" aria-labelledby="games-title">
+  <section id="games" class="has-bg" aria-labelledby="games-title">
+    <div class="bg" aria-hidden="true"><picture class=""><source media="(max-width: 700px)" srcset="assets/img/games-bg-sm.webp" type="image/webp"><source srcset="assets/img/games-bg.webp" type="image/webp"><img src="assets/img/games-bg.jpg" width="1408" height="768" alt="" loading="lazy" decoding="async"></picture></div>
     <div class="wrap">
       <div class="section-head reveal">
         <div>
@@ -207,13 +210,15 @@
         </div>
         <div class="plain-media reveal" id="plain-media">
           <div class="fallback" aria-hidden="true"></div>
+          <picture><source srcset="assets/img/nineteenth.webp" type="image/webp"><img src="assets/img/nineteenth.jpg" width="614" height="768" alt="A paper scorecard, pencil, ball marker, glove and a drink on a clubhouse table." loading="lazy" decoding="async"></picture>
           <span class="tag">The 19th hole</span>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="cta" id="download" aria-labelledby="cta-title">
+  <section class="cta has-bg" id="download" aria-labelledby="cta-title">
+    <div class="bg" aria-hidden="true"><picture class=""><source media="(max-width: 700px)" srcset="assets/img/cta-bg-sm.webp" type="image/webp"><source srcset="assets/img/cta-bg.webp" type="image/webp"><img src="assets/img/cta-bg.jpg" width="1408" height="768" alt="" loading="lazy" decoding="async"></picture></div>
     <div class="wrap">
       <span class="eyebrow reveal">Coming to iPhone</span>
       <h2 id="cta-title" class="reveal">Ready for the first tee.</h2>
