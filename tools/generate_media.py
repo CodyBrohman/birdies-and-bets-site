@@ -45,7 +45,7 @@ JOBS = [
                 "no people, no text"
             ),
             "aspect_ratio": "16:9",
-            "resolution": "2K",
+            "resolution": "1080p",
             "num_images": 1,
         },
     },
@@ -77,7 +77,7 @@ JOBS = [
                 "bentgrass, dew, shallow depth of field, dark shadows, warm rim light, abstract texture, no text"
             ),
             "aspect_ratio": "3:2",
-            "resolution": "2K",
+            "resolution": "1080p",
             "num_images": 1,
         },
     },
@@ -94,7 +94,7 @@ JOBS = [
                 "no text, no logos"
             ),
             "aspect_ratio": "4:5",
-            "resolution": "2K",
+            "resolution": "1080p",
             "num_images": 1,
         },
     },
@@ -117,6 +117,7 @@ def request(method, url, body=None, headers=None, raw=False):
     data = json.dumps(body).encode() if body is not None else None
     req = urllib.request.Request(url, data=data, method=method)
     req.add_header("Accept", "application/json" if not raw else "*/*")
+    req.add_header("User-Agent", "birdies-and-bets-site/1.0 (+https://github.com/CodyBrohman/birdies-and-bets-site)")
     if data is not None:
         req.add_header("Content-Type", "application/json")
     for k, v in (headers or {}).items():
