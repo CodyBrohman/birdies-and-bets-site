@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/site.css">
+<link rel="stylesheet" href="assets/css/site.css?v=2">
 <script>document.documentElement.classList.remove('no-js');</script>
 </head>
 <body>
@@ -69,7 +69,7 @@
       </div>
       <div class="hero-device">
         <div class="phone" id="hero-phone">
-          <img src="assets/img/01-home-dark.png" width="640" height="1391" alt="Birdies &amp; Bets home screen: Start Round, a round in progress at Cedar Hollow Golf Club, and recent rounds." fetchpriority="high">
+          <img src="assets/img/01-home.png" width="640" height="1391" alt="Birdies &amp; Bets home screen: a greeting, the next round at Cedar Ridge Golf Club over a golf photo, your handicap and your golf circle." fetchpriority="high">
         </div>
       </div>
     </div>
@@ -92,26 +92,46 @@
           <span class="eyebrow">In play</span>
           <h2 id="shots-title">One hole at a time.</h2>
         </div>
-        <p class="lede">Tap a score and the hole advances itself. Standings update before you reach the next tee.</p>
+        <p class="lede">Build the round, tap a score and the hole advances itself. Standings update before you reach the next tee.</p>
       </div>
       <div class="shots" id="shots-carousel">
         <div class="shots-track" tabindex="0" aria-roledescription="carousel" aria-label="App screens">
           <figure class="shot reveal">
-            <div class="phone sm"><img src="assets/img/05a-scorecard-hole-dark.png" width="640" height="1391" alt="Hole screen with four players, stroke badges and score chips." loading="lazy"></div>
+            <div class="phone sm"><img src="assets/img/02-bet.png" width="640" height="1391" alt="Round builder with the course, a Saturday 8:30 tee time and Start this round." loading="lazy"></div>
+            <figcaption><strong>Build the round</strong>Pick the course and tee time, bring your crew, add a side game.</figcaption>
+          </figure>
+          <figure class="shot reveal">
+            <div class="phone sm"><img src="assets/img/03-hole.png" width="640" height="1391" alt="Hole screen with score chips for each player and their handicap strokes." loading="lazy"></div>
             <figcaption><strong>Score the hole</strong>Chips, not keyboards. Strokes shown on the holes that get them.</figcaption>
           </figure>
           <figure class="shot reveal">
-            <div class="phone sm"><img src="assets/img/06-standings-dark.png" width="640" height="1391" alt="Standings screen with live results for each game." loading="lazy"></div>
-            <figcaption><strong>Live standings</strong>2 up through 7, three skins carrying, who's in the hot seat.</figcaption>
+            <div class="phone sm"><img src="assets/img/04-standings.png" width="640" height="1391" alt="Standings screen with skins won and who is in the hot seat." loading="lazy"></div>
+            <figcaption><strong>Live standings</strong>Skins carrying, who's in the hot seat, updated every hole.</figcaption>
           </figure>
           <figure class="shot reveal">
-            <div class="phone sm"><img src="assets/img/07-summary-dark.png" width="640" height="1391" alt="Round summary with game results and who owes whom." loading="lazy"></div>
+            <div class="phone sm"><img src="assets/img/05-card.png" width="640" height="1391" alt="Scorecard with birdie circles, bogey squares and the front nine totals." loading="lazy"></div>
+            <figcaption><strong>The full card</strong>Birdies circled, bogeys boxed, gross or net with one tap.</figcaption>
+          </figure>
+          <figure class="shot reveal">
+            <div class="phone sm"><img src="assets/img/06-summary.png" width="640" height="1391" alt="Round summary with low gross, every player’s gross, handicap and net, and the game results." loading="lazy"></div>
             <figcaption><strong>The 19th</strong>Game results and the tally. Share the card to the group chat.</figcaption>
+          </figure>
+          <figure class="shot reveal">
+            <div class="phone sm"><img src="assets/img/07-courses.png" width="640" height="1391" alt="Courses screen with search, filters and a photo card for each course." loading="lazy"></div>
+            <figcaption><strong>Find your fairway</strong>Your courses in one place, or search and import a new one.</figcaption>
+          </figure>
+          <figure class="shot reveal">
+            <div class="phone sm"><img src="assets/img/08-friends.png" width="640" height="1391" alt="Friends screen with upcoming and past rounds and a Rematch button." loading="lazy"></div>
+            <figcaption><strong>Your golf circle</strong>The people you play with, their index and a one-tap rematch.</figcaption>
+          </figure>
+          <figure class="shot reveal">
+            <div class="phone sm"><img src="assets/img/09-profile.png" width="640" height="1391" alt="Profile screen with the golfer card, handicap index and clubs in the bag." loading="lazy"></div>
+            <figcaption><strong>Make it yours</strong>Your index, home course area and the clubs in your bag.</figcaption>
           </figure>
         </div>
         <div class="shots-ctl">
           <button class="icon-btn" type="button" data-dir="-1" aria-label="Previous screen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button>
-          <span class="pos" aria-live="polite">1 / 3</span>
+          <span class="pos" aria-live="polite">1 / 8</span>
           <button class="icon-btn" type="button" data-dir="1" aria-label="Next screen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
         </div>
       </div>
