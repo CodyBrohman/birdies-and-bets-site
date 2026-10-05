@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shared scorecard — Birdies &amp; Bets</title>
+<meta name="description" content="A golf scorecard shared from Birdies &amp; Bets.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#080F0D">
+<link rel="canonical" href="https://www.birdiesandbets.com/card">
+<link rel="icon" href="assets/img/favicon.png?v=5" type="image/png" sizes="64x64">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png?v=4">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css?v=2">
+<style>
+  .card-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
+  .card-head h1 { margin-bottom: 6px; }
+  .basis { display: inline-flex; border: 1px solid var(--hair-2); border-radius: var(--pill); padding: 4px; gap: 4px; }
+  .basis button { font: 600 14px var(--sans); color: var(--muted); background: none; border: 0; border-radius: var(--pill); padding: 8px 16px; cursor: pointer; }
+  .basis button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+  .scroller { overflow-x: auto; border: 1px solid var(--hair); border-radius: var(--r); background: var(--raised); }
+  table.score { border-collapse: collapse; width: 100%; font: 500 15px var(--mono); font-variant-numeric: tabular-nums; }
+  table.score th, table.score td { padding: 10px 8px; text-align: center; border-bottom: 1px solid var(--hair); white-space: nowrap; }
+  table.score thead th { font: 700 11px var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--muted-2); }
+  table.score th[scope="row"] { text-align: left; font: 600 15px var(--sans); color: var(--muted); padding-left: 16px; }
+  table.score td.player { color: var(--text); }
+  table.score tr.sub th, table.score tr.sub td { background: var(--raised-2); color: var(--text); font-weight: 700; }
+  table.score .under { color: var(--accent); }
+  table.score .over { color: var(--gold); }
+  table.score .muted { color: var(--muted-2); }
+  .games { display: grid; gap: 16px; margin-top: 32px; }
+  .game { border: 1px solid var(--hair); border-radius: var(--r); background: var(--raised); padding: 20px 22px; }
+  .game h2 { margin: 0 0 6px !important; font-size: 18px !important; }
+  .game .headline { color: var(--text); font-weight: 600; margin: 0 0 6px; }
+  .game p { margin: 2px 0; font-size: 15px; }
+  .cta { margin-top: 40px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+  .note { font-size: 14px !important; color: var(--muted-2) !important; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header is-scrolled">
+  <div class="wrap">
+    <a class="brand" href="./" aria-label="Birdies &amp; Bets home">
+      <img src="assets/img/logo-96.png?v=2" width="32" height="32" alt="" decoding="async">
+      Birdies &amp; Bets
+    </a>
+    <nav class="nav" aria-label="Site">
+      <a href="./#games">Games</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="support.html">Support</a>
+      <a class="btn btn-primary" href="./#download">Get the app</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="article">
+<div class="wrap narrow" id="card">
+  <noscript><h1>Shared scorecard</h1><p>Turn on JavaScript to see this scorecard.</p></noscript>
+</div>
+<div class="wrap narrow">
+  <div class="cta">
+    <!-- TODO: App Store URL once the listing is live (same as index.html). -->
+    <a class="btn btn-primary" href="./#download">Get Birdies &amp; Bets</a>
+    <a class="btn btn-ghost" href="./">What is this?</a>
+  </div>
+  <p class="note">This card was shared from the Birdies &amp; Bets app. The scores travel inside the link itself, after the #, so our website never receives them. Points only; nothing is paid through the app.</p>
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>&copy; 2026 Birdies &amp; Bets</span>
+    <nav aria-label="Footer">
+      <a href="privacy.html">Privacy policy</a>
+      <a href="support.html">Support</a>
+      <a href="mailto:codybrohman@gmail.com">codybrohman@gmail.com</a>
+    </nav>
+  </div>
+</footer>
+<script src="assets/js/card.js?v=1"></script>
+</body>
+</html>

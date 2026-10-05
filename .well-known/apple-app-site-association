@@ -1,0 +1,13 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["BHQZ3J8C6Q.com.birdiesandbets.app"],
+        "components": [
+          { "/": "/card", "comment": "Shared scorecards: the round is in the fragment after #" },
+          { "/": "/card/", "comment": "Same, with a trailing slash" }
+        ]
+      }
+    ]
+  }
+}
