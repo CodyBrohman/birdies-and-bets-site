@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Privacy Policy — Birdies &amp; Bets</title>
-<meta name="description" content="Privacy policy for Birdies &amp; Bets: Golf Scorecard. No accounts, no analytics, nothing about you or your golf is collected.">
+<meta name="description" content="Privacy policy for Birdies &amp; Bets: Golf Scorecard. No accounts and no ads. Your scores stay on your phone; anonymous crash reports and opt-in usage counts only.">
 <meta name="theme-color" content="#080F0D">
 <link rel="canonical" href="https://www.birdiesandbets.com/privacy.html">
 <link rel="icon" href="assets/img/favicon.png?v=5" type="image/png" sizes="64x64">
@@ -35,12 +35,13 @@
 <main id="main" class="article">
 <div class="wrap narrow">
 <h1>Privacy Policy</h1>
-<p class="meta">Birdies &amp; Bets: Golf Scorecard · Effective 22 September 2026</p>
+<p class="meta">Birdies &amp; Bets: Golf Scorecard · Effective 5 October 2026</p>
 
 <p>Birdies &amp; Bets is a golf scorecard app that keeps score and tracks the side games a group agrees to play. It is built to work on your phone, offline, without an account.</p>
 
 <h2>What we collect</h2>
-<p><strong>Nothing about you or your golf.</strong> The app has no user accounts, no sign-in, no analytics, no advertising, and no crash reporting service. Scores, player names, handicap indexes and course details are never sent to us.</p>
+<p><strong>Nothing about you or your golf.</strong> The app has no user accounts, no sign-in and no advertising, and it does not track you across apps or websites. Scores, player names, handicap indexes and course details are never sent to us.</p>
+<p>Two things can leave your phone, and neither is linked to you: anonymous <a href="#crash-reports">crash reports</a>, which you can turn off, and anonymous <a href="#usage-analytics">usage counts</a>, which are off unless you turn them on. Both are under <strong>Profile → Settings → Privacy</strong>.</p>
 
 <h2>What stays on your device</h2>
 <p>The scores, player names, handicap indexes, courses and round history you enter are stored only in the app's private storage on your phone. Deleting the app deletes them. They leave your phone only when you choose to share a scorecard image or save a backup file, and then only to the app or place you pick.</p>
@@ -51,11 +52,19 @@
   <li><strong>Course search.</strong> When you type in the course search box, the text you type is sent to our course lookup service (a Cloudflare Worker we operate) which forwards it to GolfCourseAPI to find scorecards. Those services see the search text and your IP address. Nothing else from the app is sent. Courses you download are stored on your phone; saved courses and manual entry work without any connection.</li>
 </ul>
 
+<h2 id="crash-reports">Crash reports</h2>
+<p>When the app hits an error, it can send a crash report to Sentry (operated by Functional Software, Inc.) so we can find and fix the bug. Crash reports are <strong>on by default</strong>, and you can turn them off at any time under Settings → Privacy → Crash reports. Nothing is sent before your settings have loaded.</p>
+<p>A crash report contains the error message and where in the app's code it happened, the screens you moved through just before it, your phone model, iOS version, app version and update ID. Before a report leaves your phone the app removes your device's name, and it never includes player names, scores, courses, notes or anything you typed. The report carries no account, advertising ID or other identifier for you. Sentry's servers see your IP address when the report arrives; we do not store it with the report. Reports are deleted automatically within 90 days.</p>
+
+<h2 id="usage-analytics">Usage analytics</h2>
+<p>If you say yes, the app sends anonymous usage counts to Aptabase, a privacy-first analytics service, so we can see which features get used. Usage analytics are <strong>off unless you turn them on</strong>, either when the app first asks or under Settings → Privacy → Usage analytics, and you can turn them off at any time.</p>
+<p>The only events are: a round started (how many holes and players, which games, shotgun start or not), a round finished or discarded (how many holes were scored), a course imported or created, a scorecard shared, and a backup saved or restored. Each event also carries your iOS version, app version, language setting and a random session number that changes after an hour without use. There are no names, scores, course names, locations, device identifiers or advertising IDs. Aptabase does not use cookies or fingerprinting and does not store IP addresses.</p>
+
 <h2>Money</h2>
 <p>The app does not hold, move, or request money. It shows a tally of points between players and provides no way to pay, deposit, withdraw, or transfer anything. It contains no links to payment services.</p>
 
 <h2>Children</h2>
-<p>The app collects no personal information from anyone, including children.</p>
+<p>The app collects no personal information from anyone, including children. Crash reports and usage counts are anonymous and contain nothing that identifies the person using the app.</p>
 
 <h2>Changes</h2>
 <p>If this policy changes, the new version will be posted at this address with a new effective date.</p>
