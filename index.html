@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/site.css?v=3">
+<link rel="stylesheet" href="assets/css/site.css?v=4">
 <script>document.documentElement.classList.remove('no-js');if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('js-motion');</script>
 </head>
 <body>
@@ -39,7 +39,7 @@
   </div>
   <div class="putt" id="putt" aria-hidden="true">
     <div class="putt-line"><span class="putt-fill"></span><span class="putt-ball"></span></div>
-    <span class="putt-cup"><span class="putt-flag"></span></span>
+    <span class="putt-cup"><span class="putt-flag"><i></i></span></span>
   </div>
 </header>
 
@@ -274,16 +274,56 @@
         <p class="lede">Pick as many as the group wants before you tee off, or add one mid-round. Each recalculates from the full card.</p>
       </div>
       <ol class="games-list">
-        <li class="reveal"><span class="n">01</span><span class="name">Skins</span><span class="desc">Carryover, with optional validation.</span></li>
-        <li class="reveal"><span class="n">02</span><span class="name">Nassau</span><span class="desc">Front, back and overall, with automatic presses.</span></li>
-        <li class="reveal"><span class="n">03</span><span class="name">Match Play</span><span class="desc">Played off the low handicap.</span></li>
-        <li class="reveal"><span class="n">04</span><span class="name">Stroke Play</span><span class="desc">Gross or net.</span></li>
-        <li class="reveal"><span class="n">05</span><span class="name">Stableford</span><span class="desc">Configurable points per score.</span></li>
-        <li class="reveal"><span class="n">06</span><span class="name">Wolf</span><span class="desc">Rotating wolf and lone-wolf doubles.</span></li>
-        <li class="reveal"><span class="n">07</span><span class="name">Vegas</span><span class="desc">Team play, scores combined.</span></li>
-        <li class="reveal"><span class="n">08</span><span class="name">Bingo Bango Bongo</span><span class="desc">First on, closest, first in.</span></li>
-        <li class="reveal"><span class="n">09</span><span class="name">Hot Seat</span><span class="desc">With punishments your group writes.</span></li>
+        <li class="reveal" data-game="skins"><span class="n">01</span><span class="name">Skins</span><span class="desc">Carryover, with optional validation.</span></li>
+        <li class="reveal" data-game="nassau"><span class="n">02</span><span class="name">Nassau</span><span class="desc">Front, back and overall, with automatic presses.</span></li>
+        <li class="reveal" data-game="match"><span class="n">03</span><span class="name">Match Play</span><span class="desc">Played off the low handicap.</span></li>
+        <li class="reveal" data-game="stroke"><span class="n">04</span><span class="name">Stroke Play</span><span class="desc">Gross or net.</span></li>
+        <li class="reveal" data-game="stableford"><span class="n">05</span><span class="name">Stableford</span><span class="desc">Configurable points per score.</span></li>
+        <li class="reveal" data-game="wolf"><span class="n">06</span><span class="name">Wolf</span><span class="desc">Rotating wolf and lone-wolf doubles.</span></li>
+        <li class="reveal" data-game="vegas"><span class="n">07</span><span class="name">Vegas</span><span class="desc">Team play, scores combined.</span></li>
+        <li class="reveal" data-game="bbb"><span class="n">08</span><span class="name">Bingo Bango Bongo</span><span class="desc">First on, closest, first in.</span></li>
+        <li class="reveal" data-game="hotseat"><span class="n">09</span><span class="name">Hot Seat</span><span class="desc">With punishments your group writes.</span></li>
       </ol>
+    </div>
+  </section>
+
+  <section id="chat" class="chat-section" aria-labelledby="chat-title">
+    <div class="wrap chat-grid">
+      <div class="chat-copy reveal">
+        <span class="eyebrow">The group chat</span>
+        <h2 id="chat-title">Settled before the parking lot.</h2>
+        <p class="lede">Share the finished card to the group chat. Anyone can open it in a browser, no app needed, and the tally is done before the cart is back.</p>
+      </div>
+      <div class="chat" id="chat-window">
+        <div class="chat-head" aria-hidden="true">
+          <span class="chat-avatars"><i>JL</i><i>SR</i><i>MC</i></span>
+          <span><strong>Saturday golf</strong>4 people</span>
+        </div>
+        <ol class="chat-log" aria-label="Example group chat">
+          <li class="msg in"><span class="who">Jordan</span><p>Who's in Saturday? 8:30 at Cedar Ridge</p></li>
+          <li class="msg in"><span class="who">Sam</span><p>In. Skins and a Nassau?</p></li>
+          <li class="msg in"><span class="who">Maya</span><p>Only if Alex isn't wolf all day</p></li>
+          <li class="msg out msg-card"><span class="who visually-hidden">You</span>
+            <a class="link-card" href="card.html#v1.eyJ2IjoxLCJjIjoiQ2VkYXIgUmlkZ2UgR29sZiBDbHViIiwidCI6IldoaXRlIiwiZCI6IjIwMjYtMTAtMDNUMTk6MzA6MDAuMDAwWiIsImIiOiJuZXQiLCJoIjpbWzEsNCw3XSxbMiw1LDFdLFszLDMsMTFdLFs0LDQsNV0sWzUsNCwxM10sWzYsMywxN10sWzcsNSwzXSxbOCw0LDldLFs5LDQsMTVdXSwicCI6W1siQWxleCIsNCxbNSw1LDMsNCw0LDMsNiw0LDRdXSxbIk1heWEiLDEsWzQsNSwyLDQsMywzLDUsNCw0XV0sWyJKb3JkYW4iLDcsWzUsNiw0LDUsNSw0LDYsNSw0XV0sWyJTYW0iLDUsWzUsNSwzLDUsNCwzLDUsNSw0XV1dLCJnIjpbWyJTa2lucyIsIm5ldCIsIk1heWEgd2lucyA0IHNraW5zIixbIk1heWEgNCBza2lucywgaG9sZXMgMyBhbmQgNSIsIlNhbSAyIHNraW5zLCBob2xlIDciLCJBbGV4IDEgc2tpbiwgaG9sZSA0IiwiMiBza2lucyBsZWZ0IG9uIHRoZSB0YWJsZSBhdCA5Il1dLFsiSG90IFNlYXQiLCJuZXQiLCJKb3JkYW4gaW4gdGhlIHNlYXQgMsOXIixbIlRvb2sgaXQgb24gMiB3aXRoIGEgbmV0IDUiLCJUb29rIGl0IGJhY2sgb24gNiB3aXRoIGEgbmV0IDQiXV1dfQ">
+              <span class="lc-body">
+                <span class="lc-title">Cedar Ridge Golf Club</span>
+                <span class="lc-meta">Sat 3 Oct · Front nine · Net</span>
+                <span class="lc-rows">
+                  <span><b>Maya</b><em>33</em></span>
+                  <span><b>Alex</b><em>34</em></span>
+                  <span><b>Sam</b><em>34</em></span>
+                  <span><b>Jordan</b><em>37</em></span>
+                </span>
+                <span class="lc-games"><span>Skins · Maya 4</span><span>Hot seat · Jordan</span></span>
+              </span>
+              <span class="lc-foot">birdiesandbets.com/card</span>
+            </a>
+            <span class="tapback" role="img" aria-label="Sam reacted with laughing">😂</span>
+          </li>
+          <li class="msg in"><span class="who">Maya</span><p>4 skins 😌</p></li>
+          <li class="msg in"><span class="who">Jordan</span><p>Hot seat AGAIN</p></li>
+        </ol>
+      </div>
     </div>
   </section>
 
@@ -340,6 +380,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script src="assets/js/hero-canvas.js" defer></script>
-<script src="assets/js/site.js?v=2" defer></script>
+<script src="assets/js/site.js?v=3" defer></script>
 </body>
 </html>

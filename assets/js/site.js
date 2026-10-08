@@ -1,5 +1,5 @@
 /* Birdies & Bets site behaviour: header, putt progress, hero motion and shot tracer, story pin, reveals,
-   carousel, marquee, scorecard mock. */
+   marquee and wind, game diagrams, group chat, dawn-to-dusk grade, tiles, logo easter egg, scorecard mock, carousel. */
 (function () {
   'use strict';
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -242,27 +242,280 @@
     putt.classList.add('is-on');
   }
 
-  /* ---------- marquee: speeds up and leans with scroll velocity ---------- */
+  /* ---------- scroll velocity: marquee speeds up and leans, the putt flag catches the wind ---------- */
   var mq = document.querySelector('.marquee-track');
-  if (mq && motion) {
-    mq.classList.add('is-gsap');
-    var loop = gsap.to(mq, { xPercent: -50, duration: 40, ease: 'none', repeat: -1 });
-    var skewTo = gsap.quickTo(mq, 'skewX', { duration: 0.5, ease: 'power3' });
-    var hover = false, skewT = 0;
-    var settle = function () { gsap.to(loop, { timeScale: hover ? 0 : 1, duration: 1.2, ease: 'power2.out', overwrite: true }); };
+  var cloth = document.querySelector('.putt-flag i');
+  if (motion && (mq || cloth)) {
+    var loop = null, skewTo = null, hover = false, calmT = 0;
+    var settle = function () { if (loop) gsap.to(loop, { timeScale: hover ? 0 : 1, duration: 1.2, ease: 'power2.out', overwrite: true }); };
+    if (mq) {
+      mq.classList.add('is-gsap');
+      loop = gsap.to(mq, { xPercent: -50, duration: 40, ease: 'none', repeat: -1 });
+      skewTo = gsap.quickTo(mq, 'skewX', { duration: 0.5, ease: 'power3' });
+      mq.parentNode.addEventListener('mouseenter', function () { hover = true; settle(); });
+      mq.parentNode.addEventListener('mouseleave', function () { hover = false; settle(); });
+    }
+    var windTo = cloth ? gsap.quickTo(cloth, 'scaleX', { duration: 0.6, ease: 'power2' }) : null;
+    var gustTo = cloth ? gsap.quickTo(cloth, 'skewY', { duration: 0.6, ease: 'power2' }) : null;
     ScrollTrigger.create({
       onUpdate: function (self) {
-        if (hover) return;
         var v = self.getVelocity();
-        gsap.to(loop, { timeScale: Math.min(1 + Math.abs(v) / 220, 9), duration: 0.2, overwrite: true, onComplete: settle });
-        skewTo(gsap.utils.clamp(-8, 8, v / -350));
-        clearTimeout(skewT);
-        skewT = setTimeout(function () { skewTo(0); }, 140);
+        if (cloth) { windTo(1 + Math.min(Math.abs(v) / 2500, 0.6)); gustTo(gsap.utils.clamp(-16, 16, v / -250)); }
+        if (mq && !hover) {
+          gsap.to(loop, { timeScale: Math.min(1 + Math.abs(v) / 220, 9), duration: 0.2, overwrite: true, onComplete: settle });
+          skewTo(gsap.utils.clamp(-8, 8, v / -350));
+        }
+        clearTimeout(calmT);
+        calmT = setTimeout(function () {
+          if (skewTo) skewTo(0);
+          if (cloth) { windTo(1); gustTo(0); }
+        }, 140);
       }
     });
-    var mqHost = mq.parentNode;
-    mqHost.addEventListener('mouseenter', function () { hover = true; settle(); });
-    mqHost.addEventListener('mouseleave', function () { hover = false; settle(); });
+  }
+
+  /* ---------- game explainers: a tiny diagram per game, played on hover (or once in view on touch) ---------- */
+  // Each diagram's markup is its final frame; the timeline animates into it, so reduced motion simply shows it.
+  var seq = function (states, last, label) {
+    return states.map(function (s, i) {
+      return '<span class="v-big v-seq' + (i === states.length - 1 ? ' v-final' + last : '') + '" style="left:0;top:8px">' + s + '</span>';
+    }).join('') + '<span class="v-lbl" style="left:64px;top:12px">' + label + '</span>';
+  };
+  var playSeq = function (tl, viz) {
+    var spans = viz.querySelectorAll('.v-seq');
+    tl.set(spans, { autoAlpha: 0 });
+    spans.forEach(function (s, i) {
+      tl.fromTo(s, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.2, ease: 'power2.out' });
+      if (i < spans.length - 1) tl.to(s, { autoAlpha: 0, y: -10, duration: 0.18, ease: 'power2.in' }, '+=0.28');
+    });
+    return tl;
+  };
+  var VIZ = {
+    skins: {
+      html: '<span class="v-lbl" style="left:3px;top:24px">5</span><span class="v-lbl" style="left:21px;top:24px">6</span><span class="v-lbl" style="left:39px;top:24px">7</span>' +
+        '<span class="v-chip" style="left:78px;top:18px"></span><span class="v-chip" style="left:78px;top:13px"></span><span class="v-chip" style="left:78px;top:8px"></span>' +
+        '<span class="v-dot on" style="left:100px;top:9px">M</span>',
+      play: function (tl, viz) {
+        var chips = viz.querySelectorAll('.v-chip');
+        chips.forEach(function (c, i) {
+          var dx = i * 18 - 78, dy = 4 - (18 - i * 5);
+          tl.fromTo(c, { x: dx, y: dy - 12, autoAlpha: 0 }, { x: dx, y: dy, autoAlpha: 1, duration: 0.25, ease: 'back.out(2)' }, i * 0.22);
+        });
+        tl.to(chips, { x: 0, y: 0, duration: 0.5, ease: 'power2.inOut', stagger: 0.06 }, '+=0.2')
+          .fromTo(viz.querySelector('.v-dot'), { scale: 1.35 }, { scale: 1, duration: 0.4, ease: 'back.out(3)' }, '-=0.1');
+        return tl;
+      }
+    },
+    nassau: {
+      html: ['FRONT', 'BACK', 'TOTAL'].map(function (l, i) {
+        return '<span class="v-lbl" style="left:' + i * 44 + 'px;top:2px">' + l + '</span><span class="v-bar" style="left:' + i * 44 + 'px;top:18px;width:36px"><i></i></span>';
+      }).join('') + '<span class="v-stamp" style="left:42px;top:24px">PRESS</span>',
+      play: function (tl, viz) {
+        var bars = viz.querySelectorAll('.v-bar i');
+        tl.fromTo(bars[0], { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: 'power1.inOut' })
+          .fromTo(bars[1], { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: 'power1.inOut' })
+          .fromTo(viz.querySelector('.v-stamp'), { scale: 2.2, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.3, ease: 'power3.in' }, '-=0.1')
+          .fromTo(bars[2], { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: 'power1.inOut' });
+        return tl;
+      }
+    },
+    match: { html: seq(['AS', '1 UP', '2 UP', '3&amp;2'], ' good', 'VS SAM'), play: playSeq },
+    stroke: { html: seq(['+2', '+1', 'E', '−1'], ' good', 'THRU 9'), play: playSeq },
+    stableford: {
+      html: ['2', '3', '2', '4'].map(function (n, i) { return '<span class="v-big v-pt" style="left:' + i * 15 + 'px;top:8px">' + n + '</span>'; }).join('') +
+        '<span class="v-big good v-sum" style="left:64px;top:8px">= 11</span>',
+      play: function (tl, viz) {
+        tl.fromTo(viz.querySelectorAll('.v-pt'), { y: 10, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.22, stagger: 0.16, ease: 'back.out(2)' })
+          .fromTo(viz.querySelector('.v-sum'), { scale: 0.4, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.35, ease: 'back.out(2.5)' }, '+=0.1');
+        return tl;
+      }
+    },
+    wolf: {
+      html: '<span class="v-ring"><span class="v-dot on" style="left:10px;top:-7px"></span><span class="v-dot" style="left:27px;top:10px"></span>' +
+        '<span class="v-dot" style="left:10px;top:27px"></span><span class="v-dot" style="left:-7px;top:10px"></span></span>' +
+        '<span class="v-lbl v-lone" style="left:52px;top:12px;color:var(--gold)">LONE ×2</span>',
+      play: function (tl, viz) {
+        tl.fromTo(viz.querySelector('.v-ring'), { rotation: -270 }, { rotation: 0, duration: 1.2, ease: 'steps(3)' })
+          .fromTo(viz.querySelector('.v-lone'), { x: -8, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.3, ease: 'power2.out' });
+        return tl;
+      }
+    },
+    vegas: {
+      html: '<span class="v-tile" style="left:0;top:6px">4</span><span class="v-tile v-t2" style="left:19px;top:6px">5</span><span class="v-lbl v-vs" style="left:50px;top:12px">VS 56</span>',
+      play: function (tl, viz) {
+        tl.fromTo(viz.querySelector('.v-t2'), { x: 34, autoAlpha: 0 }, { x: 34, autoAlpha: 1, duration: 0.2 })
+          .to(viz.querySelector('.v-t2'), { x: 0, duration: 0.45, ease: 'power3.inOut' }, '+=0.2')
+          .fromTo(viz.querySelector('.v-vs'), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 });
+        return tl;
+      }
+    },
+    bbb: {
+      html: ['ON', 'CLOSE', 'IN'].map(function (l, i) {
+        return '<span class="v-dot on v-b" style="left:' + (i * 44 + 6) + 'px;top:0"></span><span class="v-lbl" style="left:' + i * 44 + 'px;top:23px">' + l + '</span>';
+      }).join(''),
+      play: function (tl, viz) {
+        tl.fromTo(viz.querySelectorAll('.v-b'), { scale: 0.4, opacity: 0.25 }, { scale: 1, opacity: 1, duration: 0.3, stagger: 0.35, ease: 'back.out(3)' });
+        return tl;
+      }
+    },
+    hotseat: {
+      html: '<span class="v-dot" style="left:0;top:16px">A</span><span class="v-dot" style="left:40px;top:16px">M</span><span class="v-dot on v-j" style="left:80px;top:16px">J</span>' +
+        '<span class="v-hat" style="left:80px;top:2px"></span>',
+      play: function (tl, viz) {
+        var hat = viz.querySelector('.v-hat');
+        tl.fromTo(hat, { x: -80, y: 0, autoAlpha: 0 }, { x: -80, autoAlpha: 1, duration: 0.2 });
+        [-40, 0].forEach(function (x) {
+          tl.to(hat, { x: x, duration: 0.4, ease: 'power1.inOut' }, '+=0.15')
+            .to(hat, { y: -9, duration: 0.2, ease: 'power1.out', yoyo: true, repeat: 1 }, '<');
+        });
+        tl.fromTo(viz.querySelector('.v-j'), { scale: 1.3 }, { scale: 1, duration: 0.35, ease: 'back.out(3)' });
+        return tl;
+      }
+    }
+  };
+  var gameRows = document.querySelectorAll('.games-list li[data-game]');
+  if (gameRows.length) {
+    var canHover = window.matchMedia('(hover: hover)').matches;
+    gameRows.forEach(function (li) {
+      var def = VIZ[li.getAttribute('data-game')];
+      if (!def) return;
+      var viz = document.createElement('span');
+      viz.className = 'viz';
+      viz.setAttribute('aria-hidden', 'true');
+      viz.innerHTML = def.html;
+      li.insertBefore(viz, li.querySelector('.desc'));
+      if (!motion) return;
+      var tl = def.play(gsap.timeline({ paused: true }), viz);
+      if (canHover) {
+        tl.progress(1);
+        li.addEventListener('mouseenter', function () { tl.restart(); });
+      } else {
+        ScrollTrigger.create({ trigger: li, start: 'top 85%', once: true, onEnter: function () { tl.restart(); } });
+      }
+    });
+  }
+
+  /* ---------- group chat: the thread types itself out once, then the card lands ---------- */
+  var chatWin = document.getElementById('chat-window');
+  if (chatWin && motion) {
+    var chatLog = chatWin.querySelector('.chat-log');
+    var msgs = chatLog.querySelectorAll('.msg');
+    var tapback = chatLog.querySelector('.tapback');
+    var typing = document.createElement('span');
+    typing.className = 'typing';
+    typing.setAttribute('aria-hidden', 'true');
+    typing.innerHTML = '<i></i><i></i><i></i>';
+    chatLog.style.position = 'relative';
+    typing.style.position = 'absolute';
+    typing.style.left = '0';
+    chatLog.appendChild(typing);
+    gsap.set(typing, { autoAlpha: 0 });
+    gsap.set(msgs, { autoAlpha: 0 });
+    if (tapback) gsap.set(tapback, { autoAlpha: 0, scale: 0 });
+    var chatTl = gsap.timeline({ paused: true });
+    msgs.forEach(function (m) {
+      var bubble = m.querySelector('p, .link-card');
+      if (m.classList.contains('out')) {
+        chatTl.fromTo(m, { autoAlpha: 0, x: 40, scale: 0.92 }, { autoAlpha: 1, x: 0, scale: 1, duration: 0.5, ease: 'back.out(1.6)', transformOrigin: '100% 100%' }, '+=0.5');
+        if (tapback) chatTl.to(tapback, { autoAlpha: 1, scale: 1, duration: 0.35, ease: 'back.out(3)' }, '+=0.7');
+        return;
+      }
+      chatTl.set(typing, { autoAlpha: 1, top: function () { return m.offsetTop + bubble.offsetTop; } }, '+=0.35')
+        .set(typing, { autoAlpha: 0 }, '+=0.7')
+        .fromTo(m, { autoAlpha: 0, y: 12, scale: 0.9 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.35, ease: 'back.out(2)', transformOrigin: '0% 100%' }, '<');
+    });
+    ScrollTrigger.create({ trigger: chatWin, start: 'top 70%', once: true, onEnter: function () { chatTl.play(); } });
+  }
+
+  /* ---------- dawn to dusk: each photo's grade deepens as it comes in, the ground warms down the page ---------- */
+  if (motion) {
+    ['#shots', '#games', '#download'].forEach(function (id) {
+      var sec = document.querySelector(id);
+      var bg = sec && sec.querySelector('.bg');
+      if (!bg) return;
+      gsap.fromTo(bg, { '--grade': 0 }, { '--grade': 0.4, ease: 'none', scrollTrigger: { trigger: sec, start: 'top bottom', end: 'center center', scrub: true } });
+    });
+    var groundAt = gsap.utils.interpolate('#080F0D', '#100D0A');
+    var raisedAt = gsap.utils.interpolate('#0F1A16', '#19140F');
+    var rootStyle = document.documentElement.style;
+    var lastStep = -1;
+    ScrollTrigger.create({
+      start: 0, end: 'max',
+      onUpdate: function (self) {
+        // Quantised so the root custom properties (and the restyle they cause) change at most 80 times.
+        var step = Math.round(self.progress * 80);
+        if (step === lastStep) return;
+        lastStep = step;
+        rootStyle.setProperty('--ground', groundAt(step / 80));
+        rootStyle.setProperty('--raised', raisedAt(step / 80));
+      }
+    });
+  }
+
+  /* ---------- tiles: a light that follows the pointer, and a slight tilt ---------- */
+  if (motion && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    document.querySelectorAll('.tile, .plain-media').forEach(function (el) {
+      gsap.set(el, { transformPerspective: 1000 });
+      var rx = gsap.quickTo(el, 'rotationX', { duration: 0.5, ease: 'power3' });
+      var ry = gsap.quickTo(el, 'rotationY', { duration: 0.5, ease: 'power3' });
+      el.addEventListener('pointerenter', function () { el.classList.add('is-lit'); });
+      el.addEventListener('pointermove', function (e) {
+        var r = el.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+        el.style.setProperty('--mx', (px * 100).toFixed(1) + '%');
+        el.style.setProperty('--my', (py * 100).toFixed(1) + '%');
+        ry((px - 0.5) * 6);
+        rx((0.5 - py) * 6);
+      });
+      el.addEventListener('pointerleave', function () { el.classList.remove('is-lit'); rx(0); ry(0); });
+    });
+  }
+
+  /* ---------- logo: back to the top instead of a reload; three quick clicks is a hole in one ---------- */
+  var brandLink = document.querySelector('.site-header .brand');
+  if (brandLink) {
+    var brandImg = brandLink.querySelector('img');
+    var clickTimes = [], toast = null, toastT = 0;
+    var holeInOne = function () {
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.setAttribute('role', 'status');
+        document.body.appendChild(toast);
+      }
+      toast.textContent = 'Hole in one. First round’s on you.';
+      toast.classList.add('is-on');
+      clearTimeout(toastT);
+      toastT = setTimeout(function () { toast.classList.remove('is-on'); }, 2800);
+      if (!motion) return;
+      var r = brandImg.getBoundingClientRect();
+      var ox = r.left + r.width / 2, oy = r.top + r.height / 2;
+      gsap.fromTo(brandImg, { rotateY: 0 }, { rotateY: 720, duration: 1, ease: 'power2.out', clearProps: 'transform' });
+      for (var i = 0; i < 24; i++) {
+        var chip = document.createElement('span');
+        chip.className = 'fx-chip' + (i % 3 === 0 ? ' gold' : '');
+        document.body.appendChild(chip);
+        // The logo sits at the top-left, so the chips burst out and down like a cannon, then gravity takes them.
+        var bx = ox + gsap.utils.random(40, 460), by = oy + gsap.utils.random(-10, 160);
+        gsap.set(chip, { x: ox, y: oy, rotation: gsap.utils.random(0, 360) });
+        gsap.timeline({ onComplete: chip.remove.bind(chip) })
+          .to(chip, { x: bx, y: by, duration: 0.5, ease: 'power3.out' }, 0)
+          .to(chip, { x: bx + gsap.utils.random(20, 160), duration: 1.2, ease: 'none' }, 0.5)
+          .to(chip, { y: window.innerHeight + 40, duration: 1.2, ease: 'power2.in' }, 0.5)
+          .to(chip, { scaleX: 0.15, duration: 0.16, ease: 'sine.inOut', yoyo: true, repeat: 9 }, 0)
+          .to(chip, { rotation: '+=' + gsap.utils.random(-540, 540), duration: 1.7, ease: 'none' }, 0);
+      }
+    };
+    brandLink.addEventListener('click', function (e) {
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+      window.scrollTo({ top: 0, behavior: reduce.matches ? 'auto' : 'smooth' });
+      var now = Date.now();
+      clickTimes = clickTimes.filter(function (t) { return now - t < 1500; });
+      clickTimes.push(now);
+      if (clickTimes.length >= 3) { clickTimes = []; holeInOne(); }
+    });
   }
 
   /* ---------- scorecard mock: pencil the scores in, then the gross -> net leaderboard ---------- */
