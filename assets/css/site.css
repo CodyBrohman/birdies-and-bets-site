@@ -124,7 +124,24 @@ button { font: inherit; color: inherit; }
 .site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); font-family: var(--serif); font-style: italic; font-weight: 700; font-size: 24px; letter-spacing: -0.01em; }
 .brand:hover { color: var(--text); }
-.brand img { width: 32px; height: 32px; border-radius: 50%; }
+.brand { perspective: 400px; }
+.brand img { width: 32px; height: 32px; border-radius: 50%; backface-visibility: visible; }
+.brand:hover img, .brand:focus-visible img { animation: chip-flip 0.8s cubic-bezier(.3,.7,.3,1); }
+@keyframes chip-flip { from { transform: rotateY(0); } to { transform: rotateY(360deg); } }
+@media (prefers-reduced-motion: reduce) { .brand:hover img, .brand:focus-visible img { animation: none; } }
+
+/* putting-green scroll progress, sits on the header's bottom edge */
+.putt { position: absolute; left: var(--gutter); right: var(--gutter); bottom: -6px; height: 12px; pointer-events: none; opacity: 0; transition: opacity var(--t); }
+.site-header.is-scrolled .putt.is-on { opacity: 1; }
+.putt-line { position: absolute; left: 0; right: 22px; top: 5px; height: 2px; background: var(--hair-2); border-radius: 2px; }
+.putt-fill { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(95,196,106,0.15), var(--accent)); transform-origin: left center; transform: scaleX(0); border-radius: 2px; }
+.putt-ball { position: absolute; left: -5px; top: -4px; width: 10px; height: 10px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff 0%, #E6ECE6 55%, #B9C4BC 100%); box-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+.putt-ball::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 30% 60%, rgba(0,0,0,0.18) 0 1px, transparent 1.5px), radial-gradient(circle at 65% 40%, rgba(0,0,0,0.18) 0 1px, transparent 1.5px), radial-gradient(circle at 55% 75%, rgba(0,0,0,0.14) 0 1px, transparent 1.5px); }
+.putt-cup { position: absolute; right: 0; top: 2px; width: 16px; height: 7px; border-radius: 50%; background: #020504; box-shadow: inset 0 1px 2px rgba(0,0,0,0.9), 0 0 0 1px var(--hair-2); }
+.putt-flag { position: absolute; left: 8px; bottom: 3px; width: 1px; height: 16px; background: var(--muted); transform-origin: bottom center; }
+.putt-flag::after { content: ""; position: absolute; left: 1px; top: 0; border-left: 8px solid var(--accent); border-top: 3px solid transparent; border-bottom: 3px solid transparent; }
+.putt.is-holed .putt-cup { box-shadow: inset 0 1px 2px rgba(0,0,0,0.9), 0 0 0 1px var(--accent), 0 0 12px 2px rgba(95,196,106,0.45); }
+@media (prefers-reduced-motion: reduce) { .putt-ball { display: none; } }
 .nav { display: flex; align-items: center; gap: 4px; }
 .nav a { color: var(--muted); text-decoration: none; font-weight: 500; font-size: 15px; padding: 10px 14px; border-radius: var(--pill); min-height: 44px; display: inline-flex; align-items: center; transition: color var(--t-fast), background-color var(--t-fast); }
 .nav a:hover { color: var(--text); }
@@ -162,6 +179,22 @@ button { font: inherit; color: inherit; }
   margin-bottom: 28px;
 }
 .hero h1 .line { display: block; }
+.hero h1 .line-scribble { display: inline-block; position: relative; }
+.scribble { position: absolute; left: 0; right: 0; bottom: -0.12em; width: 100%; height: 0.22em; overflow: visible; pointer-events: none; }
+.scribble path { fill: none; stroke: var(--gold); stroke-width: 2.4; stroke-linecap: round; opacity: 0.85; }
+.js-motion .scribble path { stroke-dasharray: 1; stroke-dashoffset: 1; }
+
+/* hero shot tracer: JS draws the arc around the phone (desktop only) */
+.tracer { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; opacity: 0; }
+.tracer.is-ready { opacity: 1; }
+.tracer svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; max-width: none; overflow: visible; }
+.tracer path { fill: none; stroke-linecap: round; }
+.tracer-glow { stroke: var(--accent); stroke-width: 10; opacity: 0.7; }
+.tracer-line { stroke: #F4FFF4; stroke-width: 3.5; }
+.tracer-ball { fill: #fff; opacity: 0; }
+.tracer-chip { position: absolute; left: 0; top: 0; margin-top: -16px; padding: 7px 14px; border-radius: var(--pill); background: var(--accent); color: var(--on-accent); font-family: var(--mono); font-size: 13px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap; box-shadow: 0 10px 30px -8px rgba(95,196,106,0.6); opacity: 0; }
+@media (max-width: 900px) { .tracer { display: none; } }
+.tracer-chip::after { content: ""; position: absolute; left: 50%; bottom: -5px; width: 10px; height: 10px; background: inherit; transform: translateX(-50%) rotate(45deg); border-radius: 2px; z-index: -1; }
 .hero h1 .w { display: inline-block; will-change: transform, opacity; }
 .hero h1 em { font-weight: 400; color: var(--accent); }
 .hero .lede { margin-bottom: 36px; }
@@ -198,6 +231,7 @@ button { font: inherit; color: inherit; }
 .marquee { border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); padding: 18px 0; overflow: hidden; }
 .marquee-track { display: flex; gap: 48px; width: max-content; animation: marquee 40s linear infinite; }
 .marquee:hover .marquee-track, .marquee:focus-within .marquee-track { animation-play-state: paused; }
+.marquee-track.is-gsap { animation: none; will-change: transform; }
 .marquee span { font-family: var(--mono); font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); white-space: nowrap; display: inline-flex; align-items: center; gap: 48px; }
 .marquee span::after { content: "◆"; color: var(--gold); font-size: 8px; }
 @keyframes marquee { to { transform: translateX(-50%); } }
@@ -229,6 +263,36 @@ section { padding: var(--section) 0; }
 
 .reveal { opacity: 0; transform: translateY(14px); }
 .reveal.is-in, .no-js .reveal { opacity: 1; transform: none; }
+
+/* ---------- pinned story ---------- */
+/* Default (mobile, reduced motion, no JS): three plain rows. JS adds .is-pinned on desktop. */
+
+.story { padding-bottom: calc(var(--section) * 0.6); }
+.story-device, .story-progress { display: none; }
+.story-steps { list-style: none; margin: 0 auto; padding: 0; display: grid; gap: 56px; max-width: 880px; }
+.story-step { display: grid; grid-template-columns: auto 1fr; gap: clamp(20px, 5vw, 64px); align-items: center; margin: 0; }
+.story-step .phone.sm { width: min(220px, 38vw); border-radius: clamp(24px, 6vw, 40px); padding: clamp(5px, 1.4vw, 8px); }
+.story-step .phone.sm img { border-radius: clamp(19px, 5vw, 32px); }
+.story-n { display: block; font-family: var(--mono); font-size: 13px; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 14px; }
+.story-step h3 { font-family: var(--serif); font-weight: 900; font-size: clamp(26px, 3.4vw, 48px); letter-spacing: -0.03em; line-height: 1.02; margin-bottom: 14px; }
+.story-step p { color: var(--muted); font-size: clamp(15px, 1.4vw, 19px); max-width: 34ch; margin: 0; }
+
+.story.is-pinned .story-pin { height: 100vh; height: 100svh; padding-top: 72px; display: flex; align-items: center; }
+.story.is-pinned .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 96px); align-items: center; }
+.story.is-pinned .story-device { display: flex; justify-content: center; perspective: 1400px; }
+.story.is-pinned .story-progress { display: flex; gap: 8px; margin-top: 40px; }
+.story.is-pinned .story-step .phone { display: none; }
+.story.is-pinned .story-steps { margin: 0; max-width: none; gap: 0; }
+.story.is-pinned .story-step { grid-area: 1 / 1; display: block; }
+.story-phone { width: min(300px, calc((100svh - 150px) / 2.22)); }
+.story-screens { position: relative; aspect-ratio: 640 / 1391; border-radius: 38px; overflow: hidden; background: #F1F0EA; }
+.story-screens img { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 0; }
+.story-progress span { width: 56px; height: 3px; border-radius: 3px; background-color: var(--hair-2); background-image: linear-gradient(var(--accent), var(--accent)); background-repeat: no-repeat; background-size: 0% 100%; }
+
+@media (max-width: 520px) {
+  .story-steps { gap: 40px; }
+  .story-step h3 { margin-bottom: 8px; }
+}
 
 /* ---------- carousel ---------- */
 
@@ -301,6 +365,26 @@ section { padding: var(--section) 0; }
 .card-mock td .s.dot::after { content: "·"; color: var(--gold); margin-left: 1px; }
 .card-mock td.tot { color: var(--text); font-weight: 700; }
 .card-mock td[data-empty] { color: var(--hair-2); }
+/* pencil marks: JS swaps the CSS borders for strokes it draws in */
+.card-mock td .s { position: relative; }
+.card-mock.is-pencil td .s.birdie, .card-mock.is-pencil td .s.bogey { border-color: transparent; }
+.card-mock .mark { position: absolute; inset: -3px; width: calc(100% + 6px); height: calc(100% + 6px); max-width: none; overflow: visible; pointer-events: none; }
+.card-mock .mark path { fill: none; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.card-mock .birdie .mark path { stroke: var(--positive); }
+.card-mock .bogey .mark path { stroke: var(--gold); }
+
+/* gross -> net leaderboard under the card */
+.board { border-top: 1px solid var(--hair-2); padding: 12px 14px 14px; font-family: var(--sans); }
+.board-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted-2); }
+.board-mode { color: var(--on-accent); background: var(--muted); padding: 3px 9px; border-radius: var(--pill); transition: background-color var(--t); }
+.board.is-net .board-mode { background: var(--accent); }
+.board-rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.board-rows li { display: grid; grid-template-columns: 22px 1fr auto; align-items: center; gap: 10px; margin: 0; padding: 5px 10px; border-radius: 8px; font-size: 14px; color: var(--muted); }
+.board-rows li:first-child { background: rgba(95,196,106,0.1); color: var(--text); }
+.board-rows .pos { font-family: var(--mono); font-size: 12px; color: var(--muted-2); }
+.board-rows li:first-child .pos { color: var(--accent); }
+.board-rows .name { font-weight: 600; }
+.board-rows .val { font-family: var(--mono); font-weight: 700; color: var(--text); }
 
 /* ---------- games list ---------- */
 
