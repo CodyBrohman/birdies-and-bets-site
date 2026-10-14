@@ -150,6 +150,7 @@ button { font: inherit; color: inherit; }
 .nav a:hover { color: var(--text); }
 .nav a[aria-current="page"] { color: var(--text); }
 .nav .btn { margin-left: 8px; min-height: 44px; }
+.nav a.btn-primary, .nav a.btn-primary:hover { color: var(--on-accent); }
 @media (max-width: 640px) { .nav a:not(.btn) { display: none; } }
 
 /* ---------- hero ---------- */
