@@ -8,3 +8,4 @@ Thumbs.db
 *.pem
 *.key
 secrets/
+_site/

@@ -23,8 +23,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+      # Publish only the site itself, not README, LICENSE, .github/ or other repo files.
+      - name: Collect public files
+        run: |
+          mkdir _site
+          cp -r *.html assets .well-known CNAME .nojekyll robots.txt sitemap.xml _site/
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
