@@ -46,8 +46,8 @@ iPhone-level code records every network request as a breadcrumb (category `http`
 `profiles?id=eq.<account id>` and the course search `/search?q=<typed text>`, and those bypass the app's
 `scrubEvent` filter. Native crash reports also carry a per-install ID as `user.id`.
 
-**Status 2026-10-20:** steps 1-4 are done in the app (`src/services/telemetry.ts`, with tests), not yet committed or
-on a build. App-hang and watchdog tracking are now off. Left: commit, a dev build and the Check below, and your steps 5-6.
+**Status 2026-10-20:** steps 1-4 are done in the app (`src/services/telemetry.ts`, with tests), app commit `5ea17af`, not yet
+on a build. App-hang and watchdog tracking are now off. Left: a dev build and the Check below, and your steps 5-6.
 
 **[Claude], in `../birdies-and-bets/src/services/telemetry.ts`:**
 1. Add `http` to the dropped breadcrumb categories (the regex near line 35 that drops `console|touch|ui.|xhr|fetch`).
