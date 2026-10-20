@@ -46,6 +46,9 @@ iPhone-level code records every network request as a breadcrumb (category `http`
 `profiles?id=eq.<account id>` and the course search `/search?q=<typed text>`, and those bypass the app's
 `scrubEvent` filter. Native crash reports also carry a per-install ID as `user.id`.
 
+**Status 2026-10-20:** steps 1-4 are done in the app (`src/services/telemetry.ts`, with tests), not yet committed or
+on a build. App-hang and watchdog tracking are now off. Left: commit, a dev build and the Check below, and your steps 5-6.
+
 **[Claude], in `../birdies-and-bets/src/services/telemetry.ts`:**
 1. Add `http` to the dropped breadcrumb categories (the regex near line 35 that drops `console|touch|ui.|xhr|fetch`).
 2. In `Sentry.init` (near line 88) pass `enableNetworkBreadcrumbs: false`. It isn't in the React Native types, so it
@@ -67,8 +70,8 @@ iPhone-level code records every network request as a breadcrumb (category `http`
 `Sentry.nativeCrash()` in a debug-only button, or throw from a debug screen). In Sentry, open the event: no `http`
 breadcrumbs, no search text, `user.id` is `anonymous`, no IP address.
 
-**Then:** the policy's device-details list ("screen size, memory, language and time zone") can be trimmed to match
-step 4; ask Claude.
+**Then:** leave the policy's device-details list ("screen size, memory, language and time zone") as it is unless step 6
+also strips language and time zone on Sentry's side: native crash reports skip the app's filter and still carry them.
 
 ### 1.3 [You] (blocker) Make hello@birdiesandbets.com work and deliver
 The whole site now says hello@birdiesandbets.com. The domain's mail already goes to Microsoft 365, but two things
@@ -271,11 +274,11 @@ The website no longer claims the app works offline (live shared rounds will need
 
 ### 4.1 [Claude] Privacy manifest and App Privacy answers match reality
 1. `app.config.ts` privacy manifest (near lines 28-44):
-   - Add collected types **Other Diagnostic Data** and **Performance Data** (not linked, no tracking, App
-     Functionality), unless 1.2 turned off app-hang and watchdog tracking (then Performance Data can go).
+   - Add the collected type **Other Diagnostic Data** (not linked, no tracking, App Functionality). Performance Data
+     isn't needed: the Sentry fix turned off app-hang and watchdog tracking.
    - Add required-reason APIs: SystemBootTime `35F9.1`, DiskSpace `E174.1`, and `3B52.1` alongside `C617.1` for
      FileTimestamp. Prebuilt React Native may skip merging the libraries' own manifests, so declare them here.
-2. Update `docs/store-listing.md`: add the two data types; correct "the EAS Update check carries no user data" (it
+2. Update `docs/store-listing.md`: add Other Diagnostic Data; correct "the EAS Update check carries no user data" (it
    sends a random install ID and, after a crash, the error text); "no location" becomes true once 3.1 is done.
 3. [You] After the first production archive, open it in Xcode (Window → Organizer → right-click the archive →
    **Generate Privacy Report**) and check every library appears, including Hermes with a signature.
@@ -388,7 +391,6 @@ Answer after 1.2 and 3.1 are done:
 | Other User Content (rounds, players, courses) | Yes | No | App Functionality |
 | Crash Data | No | No | App Functionality |
 | Other Diagnostic Data | No | No | App Functionality |
-| Performance Data (skip if app-hang tracking is off) | No | No | App Functionality |
 | Product Interaction (opt-in usage analytics) | No | No | Analytics |
 
 Tracking: **No**. Optional: Search History (course search text the Worker caches for 7 days, not linked).
