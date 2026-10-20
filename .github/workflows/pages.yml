@@ -21,15 +21,17 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
+      - uses: actions/checkout@v7
+      - uses: actions/configure-pages@v6
       # Publish only the site itself, not README, LICENSE, .github/ or other repo files.
       - name: Collect public files
         run: |
           mkdir _site
           cp -r *.html assets .well-known CNAME .nojekyll robots.txt sitemap.xml _site/
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
+          # Keep .well-known/ (app links) and .nojekyll; v4+ drops dotfiles by default.
+          include-hidden-files: true
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
