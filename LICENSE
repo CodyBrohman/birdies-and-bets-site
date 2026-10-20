@@ -1,6 +1,23 @@
+What this licence covers
+
+The MIT License below applies only to the source code of this website: the HTML,
+CSS and JavaScript written for it.
+
+It does not apply to the Birdies & Bets name and logo, the images (photos, icons
+made from the logo, the share image), the app screenshots or the written content
+of the pages. Those are (c) 2026 St. Margaret's Ventures Inc., all rights
+reserved. "Birdies & Bets" and the spade logo are trademarks of
+St. Margaret's Ventures Inc.
+
+Files in assets/js/vendor/ (GSAP) and assets/fonts/ (Inter, Playfair Display,
+JetBrains Mono) belong to their authors and keep their own licences; see the
+README.
+
+---
+
 MIT License
 
-Copyright (c) 2026 Cody Brohman
+Copyright (c) 2026 St. Margaret's Ventures Inc.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

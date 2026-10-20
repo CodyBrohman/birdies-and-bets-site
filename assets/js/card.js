@@ -99,7 +99,7 @@
     );
   }
 
-  function render(data, basis) {
+  function render(data, basis, keepFocus) {
     var holes = data.h;
     var strokes = data.p.map(function (p) { return strokesByHole(p[1], holes); });
     var valueOf = function (pi, hi) {
@@ -126,7 +126,14 @@
         playerRows.forEach(function (row, pi) {
           var v = valueOf(pi, hi);
           var rel = typeof v === 'number' ? v - holes[hi][1] : 0;
-          row.appendChild(el('td', { class: 'player' + (rel < 0 ? ' under' : rel > 0 ? ' over' : '') + (v === undefined ? ' muted' : '') }, [v === undefined ? '·' : v === null ? '–' : v]));
+          // Paper-card marks, as the app's ScoreMark draws them: a circle under par, a square over, doubled at two or
+          // more. Screen readers get the same thing in words.
+          var said = v === undefined ? 'no score' : v === null ? 'picked up' : rel < 0 ? ', ' + -rel + ' under' : rel > 0 ? ', ' + rel + ' over' : '';
+          var shown = typeof v === 'number'
+            ? [el('span', { class: 'mk' + (rel < 0 ? ' under' : rel > 0 ? ' over' : '') + (Math.abs(rel) >= 2 ? ' double' : '') }, [v])]
+            : [el('span', { 'aria-hidden': 'true' }, [v === undefined ? '·' : 'PU'])];
+          if (said) shown.push(el('span', { class: 'sr-only' }, [said]));
+          row.appendChild(el('td', { class: 'player' + (v === undefined ? ' muted' : v === null ? ' pu' : '') }, shown));
         });
       });
       if (!showSub) return;
@@ -156,7 +163,7 @@
     if (anyHandicap) {
       var btn = function (value, label) {
         var b = el('button', { type: 'button', 'aria-pressed': String(basis === value) }, [label]);
-        b.addEventListener('click', function () { render(data, value); });
+        b.addEventListener('click', function () { render(data, value, true); });
         return b;
       };
       toggle = el('div', { class: 'basis', role: 'group', 'aria-label': 'Scoring basis' }, [btn('gross', 'Gross'), btn('net', 'Net')]);
@@ -181,6 +188,8 @@
 
     root.replaceChildren(head, el('div', { class: 'scroller' }, [table]), games);
     document.title = data.c + ' scorecard — Birdies & Bets';
+    // The toggle is rebuilt with the card, so hand focus back to the button that was just pressed.
+    if (keepFocus && toggle) toggle.querySelector('[aria-pressed="true"]').focus();
   }
 
   function show() {

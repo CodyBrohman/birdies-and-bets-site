@@ -28,6 +28,8 @@ jobs:
         run: |
           mkdir _site
           cp -r *.html assets .well-known CNAME .nojekyll robots.txt sitemap.xml _site/
+          # Logo masters stay in the repo; no page uses them.
+          rm _site/assets/img/logo.png _site/assets/img/logo.jpg
       - uses: actions/upload-pages-artifact@v5
         with:
           path: _site

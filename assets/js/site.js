@@ -640,15 +640,23 @@
       track.scrollTo({ left: left, behavior: reduce.matches ? 'auto' : 'smooth' });
       update();
     }
+    // aria-disabled, not disabled: a disabled button drops keyboard focus the moment you reach the end.
     function update() {
       pos.textContent = (index + 1) + ' / ' + slides.length;
-      btns[0].disabled = index === 0;
-      btns[1].disabled = index === slides.length - 1;
+      btns[0].setAttribute('aria-disabled', String(index === 0));
+      btns[1].setAttribute('aria-disabled', String(index === slides.length - 1));
     }
-    btns.forEach(function (b) { b.addEventListener('click', function () { goTo(index + Number(b.getAttribute('data-dir'))); }); });
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (b.getAttribute('aria-disabled') === 'true') return;
+        goTo(index + Number(b.getAttribute('data-dir')));
+      });
+    });
     track.addEventListener('keydown', function (e) {
       if (e.key === 'ArrowRight') { e.preventDefault(); goTo(index + 1); }
       if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(index - 1); }
+      if (e.key === 'Home') { e.preventDefault(); goTo(0); }
+      if (e.key === 'End') { e.preventDefault(); goTo(slides.length - 1); }
     });
     var t;
     track.addEventListener('scroll', function () {

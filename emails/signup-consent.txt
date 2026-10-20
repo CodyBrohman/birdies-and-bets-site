@@ -1,0 +1,30 @@
+SIGN-UP FORM (the newsletter service's hosted form)
+Under CASL the box must start unticked, and the text must say what you'll send, who is asking,
+how to reach them, and that people can unsubscribe.
+
+Heading:
+  Get early access to Birdies & Bets
+
+Checkbox label (unticked by default, required to submit):
+  Yes, email me launch news and test invitations for Birdies & Bets.
+
+Small print under the button:
+  Sent by St. Margaret's Ventures Inc., [mailing address], hello@birdiesandbets.com.
+  You can unsubscribe at any time with the link in every email.
+  Privacy policy: https://www.birdiesandbets.com/privacy.html
+
+
+CONFIRMATION EMAIL (double opt-in)
+
+Subject:
+  Confirm your Birdies & Bets early access
+
+Body:
+  Thanks for asking for early access to Birdies & Bets, the golf scorecard that runs your group's side games.
+
+  Tap the button to confirm you want launch news and test invitations by email:
+  [Confirm my email]
+
+  If you didn't ask for this, ignore this email and you won't hear from us.
+
+  St. Margaret's Ventures Inc. · [mailing address] · hello@birdiesandbets.com

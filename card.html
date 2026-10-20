@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-hM4Jj1PuevU8w85vm0sgBZ5RWbbaTIfgZVZIgbHVAqM='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-hM4Jj1PuevU8w85vm0sgBZ5RWbbaTIfgZVZIgbHVAqM='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Shared scorecard — Birdies &amp; Bets</title>
 <meta name="description" content="A golf scorecard shared from Birdies &amp; Bets.">
@@ -12,10 +12,7 @@
 <link rel="canonical" href="https://www.birdiesandbets.com/card">
 <link rel="icon" href="assets/img/favicon.png?v=6" type="image/png" sizes="64x64">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png?v=5">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/site.css?v=6">
+<link rel="stylesheet" href="assets/css/site.css?v=8">
 <style>
   .card-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
   .card-head h1 { margin-bottom: 6px; }
@@ -29,8 +26,19 @@
   table.score th[scope="row"] { text-align: left; font: 600 15px var(--sans); color: var(--muted); padding-left: 16px; }
   table.score td.player { color: var(--text); }
   table.score tr.sub th, table.score tr.sub td { background: var(--raised-2); color: var(--text); font-weight: 700; }
-  table.score .under { color: var(--accent); }
-  table.score .over { color: var(--gold); }
+  /* Score marks match the app's ScoreMark: circle under par, square over, a second ring at two or more.
+     The shape carries the meaning; the colour only repeats it. */
+  table.score .mk { position: relative; display: inline-grid; place-items: center; width: 28px; height: 28px; }
+  table.score .mk.under { color: var(--accent); }
+  table.score .mk.over { color: var(--gold); }
+  table.score .mk.under::before, table.score .mk.over::before,
+  table.score .mk.double::after { content: ""; position: absolute; inset: 0; border: 1.5px solid currentColor; }
+  table.score .mk.under::before { border-radius: 50%; }
+  table.score .mk.over::before { border-radius: 6px; }
+  table.score .mk.double::after { inset: 3px; }
+  table.score .mk.under.double::after { border-radius: 50%; }
+  table.score .mk.over.double::after { border-radius: 4px; }
+  table.score td.pu { color: var(--muted); font-size: 12px; }
   table.score .muted { color: var(--muted-2); }
   .games { display: grid; gap: 16px; margin-top: 32px; }
   .game { border: 1px solid var(--hair); border-radius: var(--r); background: var(--raised); padding: 20px 22px; }
@@ -55,7 +63,7 @@
       <a href="./#games">Games</a>
       <a href="privacy.html">Privacy</a>
       <a href="support.html">Support</a>
-      <a class="btn btn-primary" href="./#download">Get the app</a>
+      <a class="btn btn-primary" href="./#download">Early access</a>
     </nav>
   </div>
 </header>
@@ -67,23 +75,26 @@
 <div class="wrap narrow">
   <div class="cta">
     <!-- TODO: App Store URL once the listing is live (same as index.html). -->
-    <a class="btn btn-primary" href="./#download">Get Birdies &amp; Bets</a>
+    <a class="btn btn-primary" href="./#download">Get early access</a>
     <a class="btn btn-ghost" href="./">What is this?</a>
   </div>
-  <p class="note">This card was shared from the Birdies &amp; Bets app. The scores travel inside the link itself, after the #, so our website never receives them. Points only; nothing is paid through the app.</p>
+  <p class="note">This card was shared from the Birdies &amp; Bets app. The scores travel inside the link itself, after the #, so our website never receives them. Points only; nothing is paid between players through the app.</p>
 </div>
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
-    <span>&copy; 2026 Birdies &amp; Bets</span>
+    <span>&copy; 2026 St. Margaret&rsquo;s Ventures Inc. · Ontario, Canada</span>
     <nav aria-label="Footer">
       <a href="privacy.html">Privacy policy</a>
+      <a href="terms.html">Terms</a>
+      <a href="refund.html">Refunds</a>
+      <a href="cookies.html">Cookies</a>
       <a href="support.html">Support</a>
-      <a href="mailto:codybrohman@gmail.com">codybrohman@gmail.com</a>
+      <a href="mailto:hello@birdiesandbets.com">hello@birdiesandbets.com</a>
     </nav>
   </div>
 </footer>
-<script src="assets/js/card.js?v=1"></script>
+<script src="assets/js/card.js?v=3"></script>
 </body>
 </html>

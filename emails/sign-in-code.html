@@ -1,0 +1,22 @@
+<!-- Supabase → Authentication → Email Templates: paste into both "Magic Link" and "Confirm signup"
+     (the first sign-in uses "Confirm signup"). Subject: Your Birdies & Bets sign-in code
+     A sign-in code isn't marketing, so it has no unsubscribe link. Inline styles only. -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f6f3;">
+  <tr>
+    <td align="center" style="padding:32px 16px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;background:#ffffff;border-radius:16px;">
+        <tr>
+          <td style="padding:32px 28px;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#17241d;">
+            <p style="margin:0 0 8px;font-size:15px;line-height:22px;">Your Birdies &amp; Bets sign-in code:</p>
+            <p style="margin:0 0 20px;font-size:34px;line-height:40px;font-weight:700;letter-spacing:6px;font-family:'SF Mono',Menlo,Consolas,monospace;">{{ .Token }}</p>
+            <p style="margin:0 0 20px;font-size:15px;line-height:22px;">Type it into the app to sign in. Don't share it with anyone.</p>
+            <p style="margin:0;font-size:13px;line-height:20px;color:#5b6b61;">Didn't ask for a code? You can ignore this email. Nobody can sign in to your account without it.</p>
+          </td>
+        </tr>
+      </table>
+      <p style="margin:20px 0 0;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:18px;color:#5b6b61;">
+        St. Margaret&rsquo;s Ventures Inc. · Ontario, Canada · <a href="mailto:hello@birdiesandbets.com" style="color:#2f7a3a;">hello@birdiesandbets.com</a>
+      </p>
+    </td>
+  </tr>
+</table>
