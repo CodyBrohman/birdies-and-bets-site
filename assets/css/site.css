@@ -126,7 +126,7 @@ button { font: inherit; color: inherit; }
 .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); font-family: var(--serif); font-style: italic; font-weight: 700; font-size: 24px; letter-spacing: -0.01em; }
 .brand:hover { color: var(--text); }
 .brand { perspective: 400px; }
-.brand img { width: 32px; height: 32px; border-radius: 50%; backface-visibility: visible; }
+.brand img { width: 40px; height: 40px; backface-visibility: visible; }
 .brand:hover img, .brand:focus-visible img { animation: chip-flip 0.8s cubic-bezier(.3,.7,.3,1); }
 @keyframes chip-flip { from { transform: rotateY(0); } to { transform: rotateY(360deg); } }
 @media (prefers-reduced-motion: reduce) { .brand:hover img, .brand:focus-visible img { animation: none; } }
