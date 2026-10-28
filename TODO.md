@@ -7,13 +7,18 @@ plan is in `../birdies-and-bets/TODO.md`; where the two overlap, this file says 
 
 This file isn't published: the Pages workflow copies only the site files.
 
+**2026-10-27:** the app's `TODO.md` was rewritten as the one list of everything left for you, with step-by-step
+instructions, and it took over every [You] item here. Work from that list. This file keeps the detail behind Claude's
+code and website items, which the app TODO points to by section (§3.3 and so on).
+
 **How to read it**
 - **[You]**: you do it (accounts, dashboards, DNS, your phone, App Store Connect, legal).
-- **[Claude]**: code or copy work. Ask in a session ("do TODO item 3.2") and it can be done and tested for you.
+- **[Claude]**: code or copy work. Ask in a session ("do TODO item 3.4") and it can be done and tested for you.
 - **(blocker)**: must be done before the app is submitted or the site is promoted, because the site or the
   privacy policy already promises it.
 - Line numbers in app files are as of 2026-10-20 and may drift; search for the names given.
-- Tick an item by changing `[ ]` to `[x]` and adding the date.
+- When an item is done, delete it (git history keeps it). Numbers aren't reused, so references to the rest stay
+  right.
 
 **Suggested order:** section 1 (it makes today's promises true), then 2 and 3 alongside the app work in
 `../birdies-and-bets/TODO.md`, then 6 and 7 before submission, then 9 on launch day.
@@ -31,11 +36,11 @@ keeps (email, IP address, time). The code for that is committed (`f4ef647`) but 
    - If it says `permission denied for table audit_log_entries`, stop and tell Claude: Supabase restricts some
      `auth` tables on newer projects and the function will need a different approach.
 2. In a terminal in `../birdies-and-bets`: `npx supabase functions deploy delete-account`
-   (needs `npx supabase login` and `npx supabase link` first; see app TODO Phase 0).
+   (needs `npx supabase login` and `npx supabase link` first; app TODO 2.1).
 3. The same function needs the Sign in with Apple secrets or Apple accounts can't be deleted at all (it returns
    "Account deletion is not set up yet"). If you haven't yet: Supabase → Edge Functions → Secrets, add
-   `APPLE_TEAM_ID`, `APPLE_KEY_ID`, `APPLE_CLIENT_ID` and `APPLE_PRIVATE_KEY` (the whole `.p8` file). This is the
-   open "[You] secrets + deploy" item in app TODO Phase 1A.
+   `APPLE_TEAM_ID`, `APPLE_KEY_ID`, `APPLE_CLIENT_ID` and `APPLE_PRIVATE_KEY` (the whole `.p8` file). App TODO 2.2,
+   2.5 and 2.6 walk through it.
 
 **Check:** on a dev build, sign in with a throwaway email, then delete the account in the app. In the SQL editor run
 `select count(*) from auth.audit_log_entries where payload->>'actor_username' = 'that@email';` → it should be `0`.
@@ -99,12 +104,12 @@ are missing.
 mail-tester.com gives you: aim for 9/10 or better, with SPF, DKIM and DMARC all passing.
 
 ### 1.4 [You] Confirm which tool made the website photos
-You said ChatGPT (OpenAI), so the README's credits and the licence notes say that. But
-`../birdies-and-bets/TODO.md` (Phase 4, "Website photos") calls them "the Gemini photos". Check your history.
+You said ChatGPT (OpenAI), so the README's credits and the licence notes say that. But the app TODO used to call
+them "the Gemini photos". Check your history (app TODO 5.6).
 - If they were made with **Gemini** (Google): Google's terms also let you use generated images commercially, and they
   carry an invisible SynthID watermark. Ask Claude to change the README table.
 - Either way, keep the prompts or chat history somewhere safe as a record of where they came from.
-- The same app TODO item asks whether the website keeps AI photos at all; that decision is still yours.
+- App TODO 5.6 also asks whether the website keeps AI photos at all; that decision is still yours.
 
 ---
 
@@ -167,18 +172,13 @@ free-text location (the privacy policy currently has to mention them).
 1. Remove `'bag', 'homeArea'` from `SYNCED_PREFS` in `src/services/sync.ts` (near line 59).
 2. Remove them from the `Preferences` type, `sanitizePreferences`, `apply` and `current` in
    `src/store/preferencesStore.ts` (near lines 19-24 and 74-114), so server data with them is ignored.
-3. Add storage migration v5 in `src/store/storage/migrate.ts` that deletes them from `bb:preferences`.
-4. New `supabase/migrations/0005_drop_legacy_prefs.sql`:
+3. Add storage migration v6 in `src/store/storage/migrate.ts` that deletes them from `bb:preferences` (v5 is the
+   2026-10-27 friends change).
+4. New `supabase/migrations/0008_drop_legacy_prefs.sql` (0005–0007 are friends, shared rounds and push):
    `update public.user_settings set data = data - 'bag' - 'homeArea' where data ?| array['bag','homeArea'];`
-5. [You] run 0005 in the SQL editor after the app ships.
+5. [You] run 0008 in the SQL editor after the app ships.
 
 **Then:** ask Claude to remove "the bag and home area that older versions asked for" from `privacy.html`.
-
-### 3.2 [Claude] (blocker) Pin the delete-account function's library
-`supabase/functions/delete-account/index.ts` imports `npm:@supabase/supabase-js@2`, so each deploy can pull any new
-2.x release into the code that holds your service-role and Apple keys. Change it to
-`npm:@supabase/supabase-js@2.118.0` (or add a `deno.json` import map and commit a `deno.lock`), then
-[You] redeploy (`npx supabase functions deploy delete-account`).
 
 ### 3.3 [Claude] + [You] (blocker) Upgrade to Expo SDK 58
 The only security advisory that reaches the shipped app (`decode-uri-component`, a malformed deep link can freeze the
@@ -192,14 +192,12 @@ app, GHSA-vcc3-ghjq-m6fr) is fixed only in `expo-router` 58.
 6. `npm test`, typecheck, then [You] build a new dev client and run device test 1 again.
 
 ### 3.4 [Claude] (blocker) Link the terms in the app
-The app never links to `terms.html`, and Apple requires Terms of Use and Privacy links in the app for auto-renewing
-subscriptions (guideline 3.1.2).
-1. Add `TERMS_URL = 'https://www.birdiesandbets.com/terms.html'` next to the privacy and support URLs
-   (`src/services/telemetry.ts` near lines 12-14).
-2. Welcome screen (`src/app/sign-in.tsx` near lines 262-273): replace the lone privacy link with
+Apple requires Terms of Use and Privacy links in the app for auto-renewing subscriptions (guideline 3.1.2). Since
+2026-10-27 `TERMS_URL` exists (`src/services/telemetry.ts`), and the username step in sign-in and the username sheet
+(`src/app/friend/username.tsx`) link the terms. Left:
+1. Welcome screen (`src/app/sign-in.tsx`): replace the lone privacy link with
    "By continuing you agree to the Terms of Service and Privacy Policy", both linked.
-3. Settings (near `settings.tsx:232`) and Profile (near `profile.tsx:115`): add a "Terms of service" row beside
-   "Privacy policy".
+2. Settings and Profile: add a "Terms of service" row beside "Privacy policy".
 
 ### 3.5 [Claude] (blocker) Fair privacy choices on first launch
 1. **Equal buttons** on the usage-analytics page (`src/app/onboarding.tsx` near lines 85-89): both
@@ -257,11 +255,6 @@ and risks rejection under App Store guideline 5.3 (gambling).
 **Check:** with VoiceOver on, you can adjust every control in New round and Settings; a shared message reads the
 result aloud.
 
-### 3.9 [Claude] Fix the failing CI test
-`src/store/demo.test.ts` fails on `main` (it failed before the compliance commit too): "Expected: true, Received:
-undefined". Run `npx jest src/store/demo.test.ts`, find which demo-data expectation changed, and fix the data or the
-test so CI is green again.
-
 ### 3.10 [Claude] (blocker) Remove offline wording from the app and listing
 The website no longer claims the app works offline (live shared rounds will need a connection).
 - `src/app/onboarding.tsx:19`: "Every tap is saved, even offline." → "Every tap is saved as you go."
@@ -278,6 +271,9 @@ The website no longer claims the app works offline (live shared rounds will need
      isn't needed: the Sentry fix turned off app-hang and watchdog tracking.
    - Add required-reason APIs: SystemBootTime `35F9.1`, DiskSpace `E174.1`, and `3B52.1` alongside `C617.1` for
      FileTimestamp. Prebuilt React Native may skip merging the libraries' own manifests, so declare them here.
+   - If the owner keeps them (app TODO 5.2): `NSPrivacyCollectedDataTypeDeviceID` (push tokens) and
+     `NSPrivacyCollectedDataTypeContacts` (the friends list), linked, not tracking, App Functionality. See
+     `docs/store-listing.md` › App Privacy.
 2. Update `docs/store-listing.md`: add Other Diagnostic Data; correct "the EAS Update check carries no user data" (it
    sends a random install ID and, after a crash, the error text); "no location" becomes true once 3.1 is done.
 3. [You] After the first production archive, open it in Xcode (Window → Organizer → right-click the archive →
@@ -294,8 +290,7 @@ your Expo credentials could push code, or change server addresses and keys, with
 5. [You] Needs a new native build; older builds keep accepting unsigned updates.
 
 ### 4.3 [Claude] Collect less
-- `src/services/auth.ts` near line 232 writes `profiles.handicap_index`, which nothing reads: stop writing it, then a
-  migration `alter table public.profiles drop column if exists handicap_index;`.
+- Keep `profiles.handicap_index`: since 2026-10-27 friends see it (`friend_list()`), so it is no longer unused.
 - Sign in with Apple asks for email it doesn't need (`auth.ts:139`): request `FULL_NAME` only. Test that Supabase's
   Apple provider accepts a token without an email first. Don't save the Apple email in `bb:auth`.
 - Full backup files stay in the cache folder after Back up or Restore (`settings.tsx` near lines 100-113): delete
@@ -347,8 +342,8 @@ your Expo credentials could push code, or change server addresses and keys, with
   Logs** is off (the privacy policy says the Worker keeps nothing but a one-minute rate-limit key and cached results).
 - [You] **Course search must be live at launch**, because the site says "Thousands of courses" and promises search:
   deploy the Worker with its GolfCourseAPI key, and pick a paid GolfCourseAPI plan (the free tier allows 35 requests
-  a day; see app TODO Phase 4).
-- [You] **Supabase plan**: free projects pause after 7 days without activity (app TODO Phase 4). Upgrade or keep it
+  a day; app TODO 3.1 and 3.4).
+- [You] **Supabase plan**: free projects pause after 7 days without activity (app TODO 2.9). Upgrade or keep it
   active through review.
 - [You] (optional, needs a paid Supabase plan) Authentication → Sessions: set an inactivity timeout, so stale sessions
   expire.
@@ -381,6 +376,9 @@ your Expo credentials could push code, or change server addresses and keys, with
   8.3).
 
 ### 7.3 [You] (blocker) App Privacy questionnaire
+2026-10-27: `docs/store-listing.md` › App Privacy replaces this table. It adds the friends features (Device ID,
+Contacts, and more under User Content); answer from there (app TODO 10.4).
+
 Answer after 1.2 and 3.1 are done:
 
 | Data | Linked to the user | Used for tracking | Purpose |
@@ -430,8 +428,8 @@ GolfCourseAPI. Read GolfCourseAPI's terms (or ask them) to confirm bundling and 
 "Cedar Ridge Golf Club, Elk Grove, CA" is a real course's data, replace it with an invented sample if needed.
 
 ### 8.4 [You] Decide the app's logo
-The website now uses the spade logo, but `../birdies-and-bets/TODO.md` ("Decisions", item 1) says the app keeps the
-chip logo, and the app screenshots on the website still show the chip. Pick one. If the app moves to the spade, Claude
+The website now uses the spade logo, but the app kept the chip logo (a 2026-10-14 decision; app TODO 5.5), and the
+app screenshots on the website still show the chip. Pick one. If the app moves to the spade, Claude
 can update the app icon and brand mark and recapture the website screenshots (`scripts/website-shots` in the app
 repo).
 
@@ -486,5 +484,4 @@ Do these only once the App Store listing is live. [Claude] unless noted.
 | 3.6 age question shipped | One sentence about it in `privacy.html` "Children" |
 | 5 NetInfo change | Remove the "Connection checks" bullet from `privacy.html` |
 | 6 sign-in log pruning | "Sign-in records are kept for 90 days" in `privacy.html` |
-| Live shared rounds (v1.1) | New privacy section: who can see a live round, what's stored on the server, for how long |
 | App launch | Section 9 |
