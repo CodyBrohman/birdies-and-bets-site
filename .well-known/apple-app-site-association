@@ -5,7 +5,9 @@
         "appIDs": ["BHQZ3J8C6Q.com.birdiesandbets.app"],
         "components": [
           { "/": "/card", "comment": "Shared scorecards: the round is in the fragment after #" },
-          { "/": "/card/", "comment": "Same, with a trailing slash" }
+          { "/": "/card/", "comment": "Same, with a trailing slash" },
+          { "/": "/friend", "comment": "Friend invite links: the single-use token is in the fragment after #" },
+          { "/": "/friend/", "comment": "Same, with a trailing slash" }
         ]
       }
     ]
